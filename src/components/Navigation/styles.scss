@@ -1,0 +1,74 @@
+@font-face {
+  font-family: "Source Sans Pro Semi-Bold";
+  font-style: normal;
+  font-weight: normal;
+  src: url("../../../public/fonts/SSPro/SourceSansPro-SemiBold.ttf");
+}
+
+.sidemenu {
+  width: 15rem;
+  display: flex;
+  flex-direction: column;
+
+  .logo {
+    text-decoration: none;
+    margin-bottom: 0.75rem;
+    padding-left: 1rem;
+  }
+
+  nav {
+    ul {
+      li {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        a {
+          width: 100%;
+          text-decoration: none;
+
+          .spanbox {
+            display: flex;
+            align-items: center;
+            border-radius: 5px;
+            padding: 0.75rem;
+            padding-inline: 1rem;
+
+            .routeIcon {
+              margin-right: 10px;
+            }
+
+            .textspan {
+              font-family: "Source Sans Pro Semi-Bold", sans-serif;
+              color: #262a33;
+              font-size: 1.05em;
+            }
+          }
+
+          .active {
+            box-shadow: 0px 20px 40px 0 rgb(62 52 32 / 9%);
+            background-color: white;
+
+            .textspan {
+              color: #01d394;
+            }
+          }
+
+          &:hover {
+            .spanbox {
+              box-shadow: 0px 20px 40px 0 rgb(62 52 32 / 9%);
+              transition: box-shadow 0.5s;
+              background-color: white;
+              transition: background-color 0.5s;
+
+              .textspan {
+                color: #01d394;
+                transition: color 0.5s;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
