@@ -10,16 +10,25 @@ function Dashboard() {
       <section>
         <div className="leftside">
           <div className="earnings">
-            <div className="earnbox"></div>
-            <div className="earnbox"></div>
-            <div className="earnbox"></div>
+            <div className="earnbox">
+              <h6>24h earnings</h6>
+              <h4>---</h4>
+            </div>
+            <div className="earnbox">
+              <h6>7d earnings</h6>
+              <h4>---</h4>
+            </div>
+            <div className="earnbox">
+              <h6>30d earnings</h6>
+              <h4>---</h4>
+            </div>
           </div>
-          <div className="EBCT">
-            <h2>EBCT</h2>
+          <div className="largebox">
+            <h3>EBCT</h3>
             <table></table>
           </div>
-          <div className="assets">
-            <h2>Assets</h2>
+          <div className="largebox">
+            <h3>Assets</h3>
             <table></table>
           </div>
         </div>
@@ -27,9 +36,9 @@ function Dashboard() {
           <div className="carousel"></div>
           <div className="chart"></div>
           <div className="recentactivity">
-            <h2>Recent Activity</h2>
+            <h3>Recent Activity</h3>
             <table></table>
-            <div className="viewtransactions"></div>
+            <button className="viewtransactions">VIEW ALL TRANSACTIONS</button>
           </div>
         </div>
       </section>

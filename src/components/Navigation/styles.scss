@@ -40,7 +40,7 @@
 
             .textspan {
               font-family: "Source Sans Pro Semi-Bold", sans-serif;
-              color: #262a33;
+              color: #1f2227;
               font-size: 1.05em;
             }
           }
@@ -50,7 +50,7 @@
             background-color: white;
 
             .textspan {
-              color: #01d394;
+              color: lighten(#013220, 10%);
             }
           }
 
@@ -62,7 +62,7 @@
               transition: background-color 0.5s;
 
               .textspan {
-                color: #01d394;
+                color: lighten(#013220, 10%);
                 transition: color 0.5s;
               }
             }

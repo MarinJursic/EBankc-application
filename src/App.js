@@ -9,6 +9,7 @@ import { Suspense, lazy } from "react";
 
 const Navigation = lazy(() => import("./components/Navigation"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Wallet = lazy(() => import("./pages/Wallet"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Navigate to="/dashboard" />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/wallet" element={<Wallet />} />
             <Route exact path="*" element={<Navigate to="/404" />} />
             <Route path="/404" element={<NotFound />} />
           </Routes>

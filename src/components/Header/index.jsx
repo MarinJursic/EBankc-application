@@ -161,9 +161,16 @@ function Header({ page }) {
                 alt="down"
                 width={20}
                 height={20}
+                className="dropicon"
               />
             ) : (
-              <img src="images/header/up.svg" alt="up" height={20} width={20} />
+              <img
+                src="images/header/up.svg"
+                alt="up"
+                height={20}
+                width={20}
+                className="dropicon"
+              />
             )}
             {dropdown && (
               <div className="dropdown">

@@ -1,15 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./styles.scss";
 
 function Navigation() {
+  const location = useLocation().pathname;
+
   return (
     <aside className="sidemenu">
       <a href="https://google.com" className="logo">
         <img
           src="images/navigation/logo.svg"
           alt="logo"
-          height={60}
+          height={80}
           width={175}
         />
       </a>
@@ -17,7 +19,11 @@ function Navigation() {
         <ul>
           <li>
             <Link to="/dashboard">
-              <span className="spanbox active">
+              <span
+                className={
+                  location === "/dashboard" ? "spanbox active" : "spanbox"
+                }
+              >
                 <img
                   src="images/navigation/dashboard.svg"
                   alt="dashboard"
@@ -31,7 +37,11 @@ function Navigation() {
           </li>
           <li>
             <Link to="/wallet">
-              <span className="spanbox">
+              <span
+                className={
+                  location === "/wallet" ? "spanbox active" : "spanbox"
+                }
+              >
                 <img
                   src="images/navigation/wallet.svg"
                   alt="wallet"
@@ -45,7 +55,9 @@ function Navigation() {
           </li>
           <li>
             <Link to="/earn">
-              <span className="spanbox">
+              <span
+                className={location === "/earn" ? "spanbox active" : "spanbox"}
+              >
                 <img
                   src="images/navigation/earn.svg"
                   alt="earn"
@@ -58,8 +70,10 @@ function Navigation() {
             </Link>
           </li>
           <li>
-            <Link to="/ebnk">
-              <span className="spanbox">
+            <Link to="/ebct">
+              <span
+                className={location === "/ebct" ? "spanbox active" : "spanbox"}
+              >
                 <img
                   src="images/navigation/ebnk.svg"
                   alt="ebnk"
@@ -73,7 +87,11 @@ function Navigation() {
           </li>
           <li>
             <Link to="/convert">
-              <span className="spanbox">
+              <span
+                className={
+                  location === "/convert" ? "spanbox active" : "spanbox"
+                }
+              >
                 <img
                   src="images/navigation/convert.svg"
                   alt="convert"
@@ -87,7 +105,9 @@ function Navigation() {
           </li>
           <li>
             <Link to="/buy">
-              <span className="spanbox">
+              <span
+                className={location === "/buy" ? "spanbox active" : "spanbox"}
+              >
                 <img
                   src="images/navigation/buy.svg"
                   alt="buy"
@@ -101,7 +121,11 @@ function Navigation() {
           </li>
           <li>
             <Link to="/transactions">
-              <span className="spanbox">
+              <span
+                className={
+                  location === "/transactions" ? "spanbox active" : "spanbox"
+                }
+              >
                 <img
                   src="images/navigation/transaction.svg"
                   alt="transaction"
