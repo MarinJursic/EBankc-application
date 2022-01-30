@@ -11,14 +11,18 @@ function Header({ page }) {
       tooltip:
         "This is the aggregate sum of all of your balances on the platform, converted into USD. The sum includes all wallet balances, stake balances and lock balances. It does not include pending balances or balances on hold.",
       btn1: "DEPOSIT",
+      btn1Icon: "images/header/deposit.svg",
       btn2: "WITHDRAW",
+      btn2Icon: "images/header/withdraw.svg",
     },
     Wallet: {
       icon: "images/navigation/wallet.svg",
       subtitle: "Available",
       tooltip: "The value of your wallet balances, estimated in USD",
       btn1: "DEPOSIT",
+      btn1Icon: "images/header/deposit.svg",
       btn2: "WITHDRAW",
+      btn2Icon: "images/header/withdraw.svg",
     },
     Earn: {
       icon: "images/navigation/earn.svg",
@@ -33,7 +37,9 @@ function Header({ page }) {
       subtitle: "Total amount",
       tooltip: "",
       btn1: "DEPOSIT",
+      btn1Icon: "images/header/deposit.svg",
       btn2: "WITHDRAW",
+      btn2Icon: "images/header/withdraw.svg",
     },
   };
 
@@ -113,8 +119,8 @@ function Header({ page }) {
   return (
     <header className="mainheader">
       {buttonPopup !== 0 && getButtonPopup()}
-      <div className="row">
-        <span className="title">
+      <div className="mRow">
+        <span className="mTitle">
           <img
             src={routeInfo[page].icon}
             alt="routeIcon"
@@ -123,20 +129,20 @@ function Header({ page }) {
           />
           <h1>{page}</h1>
         </span>
-        <span className="info">
+        <span className="mInfo">
           <img
-            src="images/header/notification.svg"
+            src="images/header/bronze.svg"
             alt="level"
             width={25}
             height={25}
-            className="outside"
+            className="mOutside"
           />
           <img
             src="images/header/notification.svg"
             alt="level"
             width={25}
             height={25}
-            className="outside bell"
+            className="mOutside mBell"
           />
           <div className="notificationdropdown">
             <h3>Notifications - 0 New</h3>
@@ -148,10 +154,10 @@ function Header({ page }) {
             ))}
           </div>
           <div
-            className="menu"
+            className="mMenu"
             onClick={() => setDropdown((dropdown) => !dropdown)}
           >
-            <div className="column">
+            <div className="mColumn">
               <h3>EBankc App User</h3>
               <h4>Bronze Tier</h4>
             </div>
@@ -173,7 +179,7 @@ function Header({ page }) {
               />
             )}
             {dropdown && (
-              <div className="dropdown">
+              <div className="mDropdown">
                 <ul>
                   <li>
                     <Link to="/settings">
@@ -215,8 +221,8 @@ function Header({ page }) {
         </span>
       </div>
       {routeInfo[page] && (
-        <div className="row">
-          <span className="left">
+        <div className="mRow">
+          <span className="mLeft">
             <span>
               {routeInfo[page].subtitle}
               <img
@@ -229,7 +235,7 @@ function Header({ page }) {
                 alt="eye"
                 width={20}
                 height={20}
-                className="eye"
+                className="mEye"
               />
             </span>
             <span>
@@ -239,27 +245,27 @@ function Header({ page }) {
                 alt="eye"
                 width={20}
                 height={20}
-                className="info"
+                className="mInfo"
               />
-              <p className="tooltip">{routeInfo[page].tooltip}</p>
+              <p className="mTooltip">{routeInfo[page].tooltip}</p>
             </span>
           </span>
-          <div className="right">
+          <div className="mRight">
             <button onClick={() => handleButton(routeInfo[page].btn1)}>
               <img
-                src="images/navigation/dashboard.svg"
+                src={routeInfo[page].btn1Icon}
                 alt="btnIcon"
-                width={25}
-                height={25}
+                width={20}
+                height={20}
               />
               <h3>{routeInfo[page].btn1}</h3>
             </button>
             <button onClick={() => handleButton(routeInfo[page].btn2)}>
               <img
-                src="images/navigation/dashboard.svg"
+                src={routeInfo[page].btn2Icon}
                 alt="btnIcon"
-                width={25}
-                height={25}
+                width={20}
+                height={20}
               />
               <h3>{routeInfo[page].btn2}</h3>
             </button>
