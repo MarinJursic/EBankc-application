@@ -8,17 +8,27 @@ export default function DepositPopup({ popup, setPopup }) {
   };
 
   return (
-    <Modal open={popup === 1 ? true : false}>
-      <section className="popup">
+    <Modal open={popup !== 0 ? true : false}>
+      <section className="depositpopup">
         <div className="box">
-          <img
-            src="images/close.svg"
-            alt="close"
-            width={15}
-            height={15}
-            onClick={handleClose}
-          />
-          <h1>KYC REQUIRED</h1>
+          <div className="headertitle">
+            <img
+              src="images/close.svg"
+              alt="close"
+              width={15}
+              height={15}
+              onClick={handleClose}
+              className="firstImg"
+            />
+            <h1>KYC REQUIRED</h1>
+            <img
+              src="images/close.svg"
+              alt="close"
+              width={15}
+              height={15}
+              onClick={handleClose}
+            />
+          </div>
           <div className="content">
             <p>
               Please verify your identity with us. It helps to ensure your

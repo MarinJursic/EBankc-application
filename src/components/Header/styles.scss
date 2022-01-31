@@ -142,6 +142,7 @@
       }
 
       .notificationdropdown {
+        z-index: 3;
         visibility: hidden;
         opacity: 0;
         position: absolute;
@@ -185,7 +186,7 @@
       .mBell:hover ~ .notificationdropdown {
         visibility: visible;
         opacity: 1;
-        transition: opacity 0.5s;
+        transition: opacity 0.25s;
       }
 
       .mMenu {

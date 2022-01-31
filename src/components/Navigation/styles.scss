@@ -7,6 +7,8 @@
 
 .sidemenu {
   width: 15rem;
+  padding-top: 1rem;
+  padding-left: 1rem;
   display: flex;
   flex-direction: column;
 
@@ -70,5 +72,11 @@
         }
       }
     }
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .sidemenu {
+    display: none;
   }
 }

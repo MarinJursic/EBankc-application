@@ -6,6 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { Suspense, lazy } from "react";
+import BottomMenu from "./components/BottomMenu";
 
 const Navigation = lazy(() => import("./components/Navigation"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
@@ -26,6 +27,7 @@ function App() {
             <Route path="/404" element={<NotFound />} />
           </Routes>
         </div>
+        <BottomMenu />
       </Suspense>
     </Router>
   );

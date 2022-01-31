@@ -28,8 +28,8 @@ function CarouselComponent() {
               <img
                 src="images/dashboard/bitcoin.svg"
                 alt="btc"
-                width={25}
-                height={25}
+                width={20}
+                height={20}
               />
               <h4>BTC ALPHA</h4>
             </span>
@@ -43,8 +43,8 @@ function CarouselComponent() {
               <img
                 src="images/dashboard/ethereum.svg"
                 alt="eth"
-                width={25}
-                height={25}
+                width={20}
+                height={20}
               />
               <h4>ETH ALPHA</h4>
             </span>
@@ -62,8 +62,8 @@ function CarouselComponent() {
               <img
                 src="images/dashboard/bnb.svg"
                 alt="bnb"
-                width={25}
-                height={25}
+                width={20}
+                height={20}
               />
               <h4>BNB ALPHA</h4>
             </span>
@@ -77,8 +77,8 @@ function CarouselComponent() {
               <img
                 src="images/dashboard/usdc.svg"
                 alt="usdc"
-                width={25}
-                height={25}
+                width={20}
+                height={20}
               />
               <h4>UDSC ALPHA</h4>
             </span>
@@ -96,8 +96,8 @@ function CarouselComponent() {
               <img
                 src="images/dashboard/usdt.svg"
                 alt="usdt"
-                width={25}
-                height={25}
+                width={20}
+                height={20}
               />
               <h4>USDT ALPHA</h4>
             </span>
@@ -111,8 +111,8 @@ function CarouselComponent() {
               <img
                 src="images/dashboard/ebct.svg"
                 alt="ebct"
-                width={25}
-                height={25}
+                width={20}
+                height={20}
               />
               <h4>EBCT ALPHA</h4>
             </span>

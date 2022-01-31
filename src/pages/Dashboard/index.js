@@ -9,8 +9,15 @@ import { MdKeyboardArrowUp, MdKeyboardArrowDown } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Chart from "../../components/Chart";
 
+import HoldPopup from "../../components/HoldPopup";
+import RedeemPopup from "../../components/RedeemPopup";
+import EarnPopup from "../../components/EarnPopup";
+
 function Dashboard() {
   const [visible, setVisible] = useState(false);
+
+  const [popup, setPopup] = useState(0);
+  const [asset, setAsset] = useState(0);
 
   const [time, setTime] = React.useState("7 days");
 
@@ -150,9 +157,30 @@ function Dashboard() {
     setTransactions((transactions) => [...tempTransactions]);
   }, [filter]);
 
+  const handlePopup = (value, assetPassed) => {
+    setPopup((popup) => value);
+    setAsset((asset) => assetPassed);
+  };
+
+  const getPopup = () => {
+    switch (popup) {
+      case 1:
+        return <HoldPopup popup={popup} setPopup={setPopup} asset={asset} />;
+      case 2:
+        return <RedeemPopup popup={popup} setPopup={setPopup} asset={asset} />;
+      case 3:
+        return <EarnPopup popup={popup} setPopup={setPopup} asset={asset} />;
+      case 4:
+        return <div>Wassup</div>;
+      default:
+        break;
+    }
+  };
+
   return (
     <main className="dashboard">
       <Header page="Dashboard" />
+      {popup !== 0 && getPopup()}
       <section>
         <div className="leftside">
           <div className="earnings">
@@ -199,7 +227,7 @@ function Dashboard() {
                   <td>---</td>
                   <td>
                     <div className="buttons">
-                      <button>
+                      <button onClick={() => handlePopup(1, "EBCT")}>
                         <span>
                           <img
                             src="images/dashboard/stake.svg"
@@ -207,10 +235,10 @@ function Dashboard() {
                             height={15}
                             width={15}
                           />
-                          Stake
+                          Hold
                         </span>
                       </button>
-                      <button>
+                      <button onClick={() => handlePopup(2, "BTC")}>
                         <span>
                           <img
                             src="images/dashboard/lock.svg"
@@ -218,7 +246,7 @@ function Dashboard() {
                             height={15}
                             width={15}
                           />
-                          Lock
+                          Redeem
                         </span>
                       </button>
                     </div>
@@ -258,7 +286,7 @@ function Dashboard() {
                     <td>---</td>
                     <td>
                       <div className="buttons">
-                        <button>
+                        <button onClick={() => handlePopup(3, asset.name)}>
                           <span>
                             <img
                               src="images/dashboard/earn.svg"
@@ -269,7 +297,7 @@ function Dashboard() {
                             Earn
                           </span>
                         </button>
-                        <button>
+                        <button onClick={() => handlePopup(2, asset.name)}>
                           <span>
                             <img
                               src="images/dashboard/redeem.svg"
@@ -289,31 +317,34 @@ function Dashboard() {
           </div>
         </div>
         <div className="rightside">
-          <div className="carousel">
-            <CarouselComponent />
+          <div className="carouselandchartwrapper">
+            <div className="carousel">
+              <CarouselComponent />
+            </div>
+            <div className="chart">
+              <span>
+                <div className="top">
+                  <img
+                    src="images/dashboard/ebct.svg"
+                    alt="ebct"
+                    width={30}
+                    height={30}
+                  />
+                  <h4>EBCT</h4>
+                </div>
+                <div className="bottom">
+                  <h3>---</h3>
+                  <select name="time" id="time" onChange={handleChange}>
+                    <option value="7 days">7 days</option>
+                    <option value="14 days">14 days</option>
+                    <option value="30 days">30 days</option>
+                  </select>
+                </div>
+              </span>
+              <Chart time={time} />
+            </div>
           </div>
-          <div className="chart">
-            <span>
-              <div className="top">
-                <img
-                  src="images/dashboard/ebct.svg"
-                  alt="ebct"
-                  width={30}
-                  height={30}
-                />
-                <h4>EBCT</h4>
-              </div>
-              <div className="bottom">
-                <h3>---</h3>
-                <select name="time" id="time" onChange={handleChange}>
-                  <option value="7 days">7 days</option>
-                  <option value="14 days">14 days</option>
-                  <option value="30 days">30 days</option>
-                </select>
-              </div>
-            </span>
-            <Chart time={time} />
-          </div>
+
           <div className="recentactivity">
             <h3>Recent Activity</h3>
             <table>

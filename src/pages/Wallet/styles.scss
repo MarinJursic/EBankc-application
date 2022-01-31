@@ -238,6 +238,7 @@
 
           th {
             padding: 0.5rem;
+            padding-inline: 0;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             font-family: "Source Sans Pro Regular", sans-serif;
             font-weight: lighter !important;
@@ -256,17 +257,18 @@
           }
 
           th:first-child {
-            padding-left: 1.25rem;
+            padding-left: 0.5rem;
             text-align: start;
           }
 
           th:last-child {
             text-align: end;
-            padding-right: 2rem;
+            padding-right: 0.5rem;
           }
 
           td {
-            padding: 0.9rem;
+            padding: 0.5rem;
+            padding-inline: 0;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
           }
 
@@ -289,7 +291,7 @@
 
           td:last-child {
             text-align: end;
-            padding-right: 2rem;
+            padding-right: 0.5rem;
             width: 20%;
           }
 
