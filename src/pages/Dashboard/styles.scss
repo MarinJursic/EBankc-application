@@ -6,7 +6,7 @@
   padding-left: 0.5rem;
   padding-right: 1rem;
 
-  section {
+  .desktop {
     width: 100%;
     display: flex;
 
@@ -218,6 +218,7 @@
             flex-direction: column;
 
             select {
+              background: transparent;
               outline: none;
               border: none;
             }
@@ -360,8 +361,9 @@
 
 @media only screen and (max-width: 1200px) {
   .dashboard {
-    section {
+    .desktop {
       flex-direction: column;
+      padding-bottom: 3rem;
 
       .leftside {
         width: 100%;
@@ -399,6 +401,16 @@
 @media only screen and (max-width: 900px) {
   .dashboard {
     width: 100%;
-    padding:1rem;
+    padding: 1rem;
+  }
+}
+
+@media only screen and (max-width: 750px) {
+  .desktop {
+    display: none !important;
+  }
+
+  .dashboard {
+    padding: 0;
   }
 }

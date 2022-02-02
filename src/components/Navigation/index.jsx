@@ -79,7 +79,7 @@ function Navigation() {
                   alt="ebnk"
                   width={20}
                   height={20}
-                  className="routeIcon"
+                  className="routeIcon filterclass"
                 />
                 <span className="textspan">Ebnk</span>
               </span>

@@ -2,27 +2,117 @@ import React, { useState } from "react";
 import "./styles.scss";
 import { Link } from "react-router-dom";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import HoldPopup from "../HoldPopup";
+import RedeemPopup from "../RedeemPopup";
+import DepositPopup from "../DepositPopup";
+import EarnPopup from "../EarnPopup";
 
 function BottomMenu() {
   const [open, setOpen] = useState(false);
+  const [popup, setPopup] = useState(0);
+  const [asset, setAsset] = useState();
 
   const handleOpen = () => {
     setOpen((open) => !open);
   };
 
+  const handlePopup = (prop1, prop2 = undefined) => {
+    setPopup((popup) => prop1);
+    if (prop2 !== undefined) {
+      setAsset((asset) => prop2);
+    }
+
+    setOpen((open) => false);
+  };
+
+  const getPopup = () => {
+    switch (popup) {
+      case 1:
+        return <HoldPopup popup={popup} setPopup={setPopup} asset={asset} />;
+      case 2:
+        return <RedeemPopup popup={popup} setPopup={setPopup} asset={asset} />;
+      case 3:
+        return <EarnPopup popup={popup} setPopup={setPopup} asset={asset} />;
+      case 4:
+        return <DepositPopup popup={popup} setPopup={setPopup} />;
+      default:
+        break;
+    }
+  };
+
   return (
     <>
+      {popup !== 0 && getPopup()}
       {open ? (
         <footer className="menu">
           <div className="content">
             <ul>
-              <li>Deposit</li>
-              <li>Withdraw</li>
-              <li>Earn</li>
-              <li>Redeem</li>
-              <li>Convert</li>
-              <li>Stake</li>
-              <li>Lock</li>
+              <li>
+                <button onClick={() => handlePopup(4)}>
+                  <img
+                    src="images/header/deposit.svg"
+                    alt="deposit"
+                    width={30}
+                    height={30}
+                  />
+                  <h5>DEPOSIT</h5>
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handlePopup(4)}>
+                  <img
+                    src="images/header/withdraw.svg"
+                    alt="withdraw"
+                    width={30}
+                    height={30}
+                  />
+                  <h5>WITHDRAW</h5>
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handlePopup(3, "BTC")}>
+                  <img
+                    src="images/navigation/earn.svg"
+                    alt="earn"
+                    width={30}
+                    height={30}
+                  />
+                  <h5>EARN</h5>
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handlePopup(2, "BTC")}>
+                  <img
+                    src="images/dashboard/redeem.svg"
+                    alt="redeem"
+                    width={30}
+                    height={30}
+                  />
+                  <h5>REDEEM</h5>
+                </button>
+              </li>
+              <li>
+                <Link to="/convert" onClick={() => setOpen(false)}>
+                  <img
+                    src="images/navigation/convert.svg"
+                    alt="convert"
+                    width={30}
+                    height={30}
+                  />
+                  <h5>CONVERT</h5>
+                </Link>
+              </li>
+              <li>
+                <button onClick={() => handlePopup(1, "EBCT")}>
+                  <img
+                    src="images/dashboard/stake.svg"
+                    alt="stake"
+                    width={30}
+                    height={30}
+                  />
+                  <h5>HOLD EBCT</h5>
+                </button>
+              </li>
             </ul>
             <div className="btnbox">
               <button onClick={handleOpen}>
@@ -36,7 +126,7 @@ function BottomMenu() {
           <div className="content">
             <ul>
               <li>
-                <Link to="/dashboard" className="active">
+                <Link to="/dashboard">
                   <img
                     src="images/navigation/dashboard.svg"
                     alt="dashboard"
@@ -80,6 +170,7 @@ function BottomMenu() {
                     alt="ebct"
                     width={20}
                     height={20}
+                    className="ebct"
                   />
                   <h5>EBCT</h5>
                 </Link>

@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import "./styles.scss";
 import { Link } from "react-router-dom";
 import DepositPopup from "../DepositPopup";
+import MobileMenu from "../MobileMenu";
 
 function Header({ page }) {
+  const [menu, setMenu] = useState(false);
+
   const routeInfo = {
     Dashboard: {
       icon: "images/navigation/dashboard.svg",
@@ -116,8 +119,13 @@ function Header({ page }) {
     }
   };
 
+  const handleMenu = () => {
+    setMenu((menu) => !menu);
+  };
+
   return (
     <header className="mainheader">
+      {menu && <MobileMenu />}
       {buttonPopup !== 0 && getButtonPopup()}
       <div className="mRow">
         <span className="mTitle">
@@ -137,86 +145,98 @@ function Header({ page }) {
             height={25}
             className="mOutside"
           />
-          <img
-            src="images/header/notification.svg"
-            alt="level"
-            width={25}
-            height={25}
-            className="mOutside mBell"
-          />
-          <div className="notificationdropdown">
-            <h3>Notifications - 0 New</h3>
-            {notifications.map((each) => (
-              <span>
-                <h4>{each.action}</h4>
-                <h6>{each.time}</h6>
-              </span>
-            ))}
+          <div className="rmobile">
+            <img
+              src={menu ? "images/close.svg" : "images/header/menu.svg"}
+              alt="menu"
+              width={menu ? 20 : 25}
+              height={menu ? 20 : 25}
+              className="menubtn"
+              onClick={handleMenu}
+            />
           </div>
-          <div
-            className="mMenu"
-            onClick={() => setDropdown((dropdown) => !dropdown)}
-          >
-            <div className="mColumn">
-              <h3>EBankc App User</h3>
-              <h4>Bronze Tier</h4>
+          <div className="rtwo">
+            <img
+              src="images/header/notification.svg"
+              alt="level"
+              width={25}
+              height={25}
+              className="mOutside mBell"
+            />
+            <div className="notificationdropdown">
+              <h3>Notifications - 0 New</h3>
+              {notifications.map((each) => (
+                <span>
+                  <h4>{each.action}</h4>
+                  <h6>{each.time}</h6>
+                </span>
+              ))}
             </div>
-            {dropdown ? (
-              <img
-                src="images/header/down.svg"
-                alt="down"
-                width={20}
-                height={20}
-                className="dropicon"
-              />
-            ) : (
-              <img
-                src="images/header/up.svg"
-                alt="up"
-                height={20}
-                width={20}
-                className="dropicon"
-              />
-            )}
-            {dropdown && (
-              <div className="mDropdown">
-                <ul>
-                  <li>
-                    <Link to="/settings">
-                      <img
-                        src="images/header/settings.svg"
-                        alt="settings"
-                        width={20}
-                        height={20}
-                      />
-                      <h3>Settings</h3>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/support">
-                      <img
-                        src="images/header/support.svg"
-                        alt="support"
-                        width={20}
-                        height={20}
-                      />
-                      <h3>Support</h3>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/logout">
-                      <img
-                        src="images/header/logout.svg"
-                        alt="logout"
-                        width={20}
-                        height={20}
-                      />
-                      <h3>Logout</h3>
-                    </Link>
-                  </li>
-                </ul>
+            <div
+              className="mMenu"
+              onClick={() => setDropdown((dropdown) => !dropdown)}
+            >
+              <div className="mColumn">
+                <h3>EBankc App User</h3>
+                <h4>Bronze Tier</h4>
               </div>
-            )}
+              {dropdown ? (
+                <img
+                  src="images/header/down.svg"
+                  alt="down"
+                  width={20}
+                  height={20}
+                  className="dropicon"
+                />
+              ) : (
+                <img
+                  src="images/header/up.svg"
+                  alt="up"
+                  height={20}
+                  width={20}
+                  className="dropicon"
+                />
+              )}
+              {dropdown && (
+                <div className="mDropdown">
+                  <ul>
+                    <li>
+                      <Link to="/settings">
+                        <img
+                          src="images/header/settings.svg"
+                          alt="settings"
+                          width={20}
+                          height={20}
+                        />
+                        <h3>Settings</h3>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/support">
+                        <img
+                          src="images/header/support.svg"
+                          alt="support"
+                          width={20}
+                          height={20}
+                        />
+                        <h3>Support</h3>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/logout">
+                        <img
+                          src="images/header/logout.svg"
+                          alt="logout"
+                          width={20}
+                          height={20}
+                        />
+                        <h3>Logout</h3>
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
         </span>
       </div>

@@ -12,6 +12,7 @@ import Chart from "../../components/Chart";
 import HoldPopup from "../../components/HoldPopup";
 import RedeemPopup from "../../components/RedeemPopup";
 import EarnPopup from "../../components/EarnPopup";
+import DashboardMobile from "../DashboardMobile";
 
 function Dashboard() {
   const [visible, setVisible] = useState(false);
@@ -181,7 +182,8 @@ function Dashboard() {
     <main className="dashboard">
       <Header page="Dashboard" />
       {popup !== 0 && getPopup()}
-      <section>
+      <DashboardMobile />
+      <section className="desktop">
         <div className="leftside">
           <div className="earnings">
             <div className="earnbox">
