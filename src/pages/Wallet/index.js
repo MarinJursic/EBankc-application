@@ -14,6 +14,29 @@ import { useDispatch, useSelector } from "react-redux";
 function Wallet() {
   const dispatch = useDispatch();
   const isVisible = useSelector((state) => state.config.isVisible);
+  const prices = useSelector((state) => state.price.prices);
+  const user = useSelector((state) => state.auth.user);
+
+  const calcAssetWalletValue = (asset, turnToString = true) => {
+    const val =
+      Math.round(user.wallet.assets[asset].wallet * prices[asset] * 100) / 100;
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
+
+  const calcAssetholdingValue = (asset, turnToString = true) => {
+    const val =
+      Math.round(user.wallet.assets[asset].holding * prices[asset] * 100) / 100;
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
+
+  const calcAssetTotalValue = (asset, turnToString = true) => {
+    const val =
+      calcAssetWalletValue(asset, false) + calcAssetholdingValue(asset, false);
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
 
   const [popup, setPopup] = useState(0);
   const [asset, setAsset] = useState(0);
@@ -222,14 +245,30 @@ function Wallet() {
                   </td>
                   <td>
                     <div className="column">
-                      <h4>{isVisible ? "0.00" : "---"}</h4>
-                      <h6>{isVisible ? "$0.00" : "---"}</h6>
+                      <h4>
+                        {isVisible
+                          ? `${user.wallet.assets["EBCT"].wallet}`
+                          : "---"}
+                      </h4>
+                      <h6>
+                        {isVisible
+                          ? `${"$" + calcAssetWalletValue("EBCT")}`
+                          : "--"}
+                      </h6>
                     </div>
                   </td>
                   <td>
                     <div className="column">
-                      <h4>{isVisible ? "0.00" : "---"}</h4>
-                      <h6>{isVisible ? "$0.00" : "---"}</h6>
+                      <h4>
+                        {isVisible
+                          ? `${user.wallet.assets["EBCT"].holding}`
+                          : "---"}
+                      </h4>
+                      <h6>
+                        {isVisible
+                          ? `${"$" + calcAssetholdingValue("EBCT")}`
+                          : "---"}
+                      </h6>
                     </div>
                   </td>
                   <td>
@@ -269,7 +308,7 @@ function Wallet() {
                 <tr>
                   <th style={{ textAlign: "start" }}>Asset</th>
                   <th>In wallet</th>
-                  <th>Deployed</th>
+                  <th>Holding</th>
                   <th></th>
                 </tr>
               </thead>
@@ -289,14 +328,30 @@ function Wallet() {
                     </td>
                     <td>
                       <div className="column">
-                        <h4>{isVisible ? "0.00" : "---"}</h4>
-                        <h6>{isVisible ? "$0.00" : "---"}</h6>
+                        <h4>
+                          {isVisible
+                            ? `${user.wallet.assets[asset.name].wallet}`
+                            : "---"}
+                        </h4>
+                        <h6>
+                          {isVisible
+                            ? `${"$" + calcAssetWalletValue(asset.name)}`
+                            : "---"}
+                        </h6>
                       </div>
                     </td>
                     <td>
                       <div className="column">
-                        <h4>{isVisible ? "0.00" : "---"}</h4>
-                        <h6>{isVisible ? "$0.00" : "---"}</h6>
+                        <h4>
+                          {isVisible
+                            ? `${user.wallet.assets[asset.name].holding}`
+                            : "---"}
+                        </h4>
+                        <h6>
+                          {isVisible
+                            ? `${"$" + calcAssetholdingValue(asset.name)}`
+                            : "---"}
+                        </h6>
                       </div>
                     </td>
                     <td>

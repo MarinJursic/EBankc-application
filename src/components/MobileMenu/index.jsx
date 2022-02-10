@@ -141,7 +141,7 @@ function MobileMenu() {
                     className="routeIcon"
                     style={{ filter: "none" }}
                   />
-                  <span className="textspan">Ebnk</span>
+                  <span className="textspan">EBCT</span>
                 </span>
               </Link>
             </li>
@@ -202,7 +202,11 @@ function MobileMenu() {
               </Link>
             </li>
             <li>
-              <Link to="/support">
+              <a
+                href="https://ebankc.netlify.app/faq"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <span>
                   <img
                     src="/images/header/support.svg"
@@ -213,7 +217,7 @@ function MobileMenu() {
                   />
                   <span className="textspan">Support</span>
                 </span>
-              </Link>
+              </a>
             </li>
             <li>
               <button onClick={() => console.log("logout")}>

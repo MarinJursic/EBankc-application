@@ -5,9 +5,10 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { Suspense, lazy, useState } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import BottomMenu from "./components/BottomMenu";
 import Loader from "./components/Loader";
+import { getPrices } from "./actions/priceActions";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -28,6 +29,12 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 function RouterComponent() {
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getPrices());
+  }, []);
 
   return (
     <Router>

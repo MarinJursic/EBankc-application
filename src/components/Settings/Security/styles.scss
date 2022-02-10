@@ -69,6 +69,20 @@
 .modalBoxTwoFactor {
   width: 45rem;
   .body {
+    .react-code-input {
+      /* Chrome, Safari, Edge, Opera */
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      /* Firefox */
+      input[type="number"] {
+        -moz-appearance: textfield;
+      }
+    }
+
     .alert {
       p {
         font-weight: normal;
@@ -124,6 +138,20 @@
     align-items: center;
     flex-direction: column;
     margin-bottom: 1rem;
+
+    .react-code-input {
+      /* Chrome, Safari, Edge, Opera */
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      /* Firefox */
+      input[type="number"] {
+        -moz-appearance: textfield;
+      }
+    }
 
     .title {
       width: 100%;
@@ -290,6 +318,20 @@
         padding: 1rem 0;
         border-radius: 0.5rem;
         border: 1px solid rgba(0, 0, 0, 0.1);
+
+        .react-code-input {
+          /* Chrome, Safari, Edge, Opera */
+          input::-webkit-outer-spin-button,
+          input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
+
+          /* Firefox */
+          input[type="number"] {
+            -moz-appearance: textfield;
+          }
+        }
 
         .alert {
           width: 80%;

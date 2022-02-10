@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 function Earn() {
   const dispatch = useDispatch();
   const isVisible = useSelector((state) => state.config.isVisible);
+  const prices = useSelector((state) => state.price.prices);
+  const user = useSelector((state) => state.auth.user);
 
   const info = [
     {
@@ -42,6 +44,25 @@ function Earn() {
     },
   ];
 
+  const calcAssetWalletValue = (asset, turnToString = true) => {
+    const val = user.wallet.assets[asset].wallet * prices[asset];
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
+
+  const calcAssetholdingValue = (asset, turnToString = true) => {
+    const val = user.wallet.assets[asset].holding * prices[asset];
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
+
+  const calcAssetTotalValue = (asset, turnToString = true) => {
+    const val =
+      calcAssetWalletValue(asset, false) + calcAssetholdingValue(asset, false);
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
+
   return (
     <main className="earn">
       <Header page="Earn" />
@@ -55,9 +76,15 @@ function Earn() {
             <div className="middle">
               <div className="midleft">
                 <h4 style={{ opacity: "0.5" }}>Holding</h4>
-                <h2>{isVisible ? "0.00" : "----"}</h2>
+                <h2>
+                  {isVisible
+                    ? `${user.wallet.assets[coin.name].holding}`
+                    : "----"}
+                </h2>
                 <h3 style={{ opacity: "0.5" }}>
-                  {isVisible ? "$0.00" : "---"}
+                  {isVisible
+                    ? `${"$" + calcAssetholdingValue(coin.name)}`
+                    : "---"}
                 </h3>
               </div>
               <div className="midright">

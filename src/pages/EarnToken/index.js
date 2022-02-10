@@ -60,9 +60,30 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 function EarnToken() {
   const dispatch = useDispatch();
   const isVisible = useSelector((state) => state.config.isVisible);
+  const prices = useSelector((state) => state.price.prices);
+  const user = useSelector((state) => state.auth.user);
   const { token } = useParams();
 
   const tokenName = token.toUpperCase();
+
+  const calcAssetWalletValue = (asset, turnToString = true) => {
+    const val = user.wallet.assets[asset].wallet * prices[asset];
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
+
+  const calcAssetholdingValue = (asset, turnToString = true) => {
+    const val = user.wallet.assets[asset].holding * prices[asset];
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
+
+  const calcAssetTotalValue = (asset, turnToString = true) => {
+    const val =
+      calcAssetWalletValue(asset, false) + calcAssetholdingValue(asset, false);
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
 
   const assets = {
     BTC: {
@@ -369,8 +390,21 @@ function EarnToken() {
                 <tr>
                   <td>
                     <div className="column">
-                      <h4>{isVisible ? "0.00" : "---"}</h4>
-                      <h6>{isVisible ? "$0.00" : "---"}</h6>
+                      <h4>
+                        {isVisible
+                          ? `${
+                              user.wallet.assets[assets[tokenName].name].holding
+                            }`
+                          : "---"}
+                      </h4>
+                      <h6>
+                        {isVisible
+                          ? `${
+                              "$" +
+                              calcAssetholdingValue(assets[tokenName].name)
+                            }`
+                          : "---"}
+                      </h6>
                     </div>
                   </td>
                   <td>

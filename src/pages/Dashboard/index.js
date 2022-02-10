@@ -15,17 +15,12 @@ import EarnPopup from "../../components/EarnPopup";
 import DashboardMobile from "../DashboardMobile";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getPrices } from "../../actions/priceActions";
 
 function Dashboard() {
   const dispatch = useDispatch();
   const isVisible = useSelector((state) => state.config.isVisible);
   const prices = useSelector((state) => state.price.prices);
   const user = useSelector((state) => state.auth.user);
-
-  useEffect(() => {
-    dispatch(getPrices());
-  }, []);
 
   const [popup, setPopup] = useState(0);
   const [asset, setAsset] = useState(0);
@@ -92,22 +87,20 @@ function Dashboard() {
   ]);
 
   const calcAssetWalletValue = (asset, turnToString = true) => {
-    const val =
-      Math.round(user.wallet[asset].wallet * prices[asset] * 100) / 100;
+    const val = user.wallet.assets[asset].wallet * prices[asset];
 
     return turnToString ? val.toLocaleString("en-US") : val;
   };
 
-  const calcAssetDeployedValue = (asset, turnToString = true) => {
-    const val =
-      Math.round(user.wallet[asset].deployed * prices[asset] * 100) / 100;
+  const calcAssetholdingValue = (asset, turnToString = true) => {
+    const val = user.wallet.assets[asset].holding * prices[asset];
 
     return turnToString ? val.toLocaleString("en-US") : val;
   };
 
   const calcAssetTotalValue = (asset, turnToString = true) => {
     const val =
-      calcAssetWalletValue(asset, false) + calcAssetDeployedValue(asset, false);
+      calcAssetWalletValue(asset, false) + calcAssetholdingValue(asset, false);
 
     return turnToString ? val.toLocaleString("en-US") : val;
   };
@@ -219,15 +212,21 @@ function Dashboard() {
           <div className="earnings">
             <div className="earnbox">
               <h6>24h earnings</h6>
-              <h4>{isVisible ? "$0.00" : "---"}</h4>
+              <h4>
+                {isVisible ? "$" + user.wallet.earnings.dailyEarnings : "---"}
+              </h4>
             </div>
             <div className="earnbox">
               <h6>7d earnings</h6>
-              <h4>{isVisible ? "$0.00" : "---"}</h4>
+              <h4>
+                {isVisible ? "$" + user.wallet.earnings.weeklyEarnings : "---"}
+              </h4>
             </div>
             <div className="earnbox">
               <h6>30d earnings</h6>
-              <h4>{isVisible ? "$0.00" : "---"}</h4>
+              <h4>
+                {isVisible ? "$" + user.wallet.earnings.monthlyEarnings : "---"}
+              </h4>
             </div>
           </div>
           <div className="largebox">
@@ -237,7 +236,7 @@ function Dashboard() {
                 <tr>
                   <th style={{ textAlign: "start" }}>Asset</th>
                   <th>In wallet</th>
-                  <th>Deployed</th>
+                  <th>Holding</th>
                   <th>Total</th>
                   <th></th>
                 </tr>
@@ -258,7 +257,9 @@ function Dashboard() {
                   <td>
                     <div className="column">
                       <h4>
-                        {isVisible ? `${user.wallet["EBCT"].wallet}` : "---"}
+                        {isVisible
+                          ? `${user.wallet.assets["EBCT"].wallet}`
+                          : "---"}
                       </h4>
                       <h6>
                         {isVisible
@@ -270,11 +271,13 @@ function Dashboard() {
                   <td>
                     <div className="column">
                       <h4>
-                        {isVisible ? `${user.wallet["EBCT"].deployed}` : "---"}
+                        {isVisible
+                          ? `${user.wallet.assets["EBCT"].holding}`
+                          : "---"}
                       </h4>
                       <h6>
                         {isVisible
-                          ? `${"$" + calcAssetDeployedValue("EBCT")}`
+                          ? `${"$" + calcAssetholdingValue("EBCT")}`
                           : "---"}
                       </h6>
                     </div>
@@ -284,8 +287,8 @@ function Dashboard() {
                       <h4>
                         {isVisible
                           ? `${
-                              user.wallet["EBCT"].wallet +
-                              user.wallet["EBCT"].deployed
+                              user.wallet.assets["EBCT"].wallet +
+                              user.wallet.assets["EBCT"].holding
                             }`
                           : "---"}
                       </h4>
@@ -333,7 +336,7 @@ function Dashboard() {
                 <tr>
                   <th style={{ textAlign: "start" }}>Asset</th>
                   <th>In wallet</th>
-                  <th>Deployed</th>
+                  <th>Holding</th>
                   <th>Total</th>
                   <th></th>
                 </tr>
@@ -356,7 +359,7 @@ function Dashboard() {
                       <div className="column">
                         <h4>
                           {isVisible
-                            ? `${user.wallet[asset.name].wallet}`
+                            ? `${user.wallet.assets[asset.name].wallet}`
                             : "---"}
                         </h4>
                         <h6>
@@ -370,12 +373,12 @@ function Dashboard() {
                       <div className="column">
                         <h4>
                           {isVisible
-                            ? `${user.wallet[asset.name].deployed}`
+                            ? `${user.wallet.assets[asset.name].holding}`
                             : "---"}
                         </h4>
                         <h6>
                           {isVisible
-                            ? `${"$" + calcAssetDeployedValue(asset.name)}`
+                            ? `${"$" + calcAssetholdingValue(asset.name)}`
                             : "---"}
                         </h6>
                       </div>
@@ -385,8 +388,8 @@ function Dashboard() {
                         <h4>
                           {isVisible
                             ? `${
-                                user.wallet[asset.name].wallet +
-                                user.wallet[asset.name].deployed
+                                user.wallet.assets[asset.name].wallet +
+                                user.wallet.assets[asset.name].holding
                               }`
                             : "---"}
                         </h4>
@@ -446,7 +449,7 @@ function Dashboard() {
                   <h4>EBCT</h4>
                 </div>
                 <div className="bottom">
-                  <h3>{isVisible ? "$0.00" : "---"}</h3>
+                  <h3>{isVisible ? `$${prices["EBCT"]}` : "---"}</h3>
                   <select name="time" id="time" onChange={handleChange}>
                     <option value="7 days">7 days</option>
                     <option value="14 days">14 days</option>

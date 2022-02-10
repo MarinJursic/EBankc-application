@@ -48,9 +48,10 @@ export default function TwoFactorAuth({ user }) {
           Please enter the verification code from Google Authenticator or Authy
         </p>
         <ReactCodeInput
-          type="text"
+          type="number"
           fields={6}
           onChange={(val) => setCode(val)}
+          autoFocus={false}
         />
         {error && <Alert text={error} error={true} />}
         <div className="buttons">

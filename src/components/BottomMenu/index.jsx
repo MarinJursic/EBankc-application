@@ -34,7 +34,21 @@ function BottomMenu() {
       case 3:
         return <EarnPopup popup={popup} setPopup={setPopup} asset={asset} />;
       case 4:
-        return <DepositWithdrawPopup popup={popup} setPopup={setPopup} />;
+        return (
+          <DepositWithdrawPopup
+            popup={popup}
+            setPopup={setPopup}
+            type={"deposit"}
+          />
+        );
+      case 5:
+        return (
+          <DepositWithdrawPopup
+            popup={popup}
+            setPopup={setPopup}
+            type={"withdraw"}
+          />
+        );
       default:
         break;
     }
@@ -59,7 +73,7 @@ function BottomMenu() {
                 </button>
               </li>
               <li>
-                <button onClick={() => handlePopup(4)}>
+                <button onClick={() => handlePopup(5)}>
                   <img
                     src="/images/header/withdraw.svg"
                     alt="withdraw"

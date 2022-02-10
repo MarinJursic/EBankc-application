@@ -519,7 +519,18 @@
 @media only screen and (max-width: 1000px) {
   .earntoken {
     width: 100%;
-    padding: 1rem;
+    padding: 1rem !important;
+  }
+}
+
+@media only screen and(max-width: 750px) {
+  .earntoken {
+    padding: 0 !important;
+
+    .desktop {
+      padding: 1rem !important;
+      padding-bottom: 5rem !important;
+    }
   }
 }
 

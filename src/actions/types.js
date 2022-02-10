@@ -8,6 +8,8 @@ export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
 export const UPDATE_USER = "UPDATE_USER";
 
+export const UPDATE_WALLET = "UPDATE_WALLET";
+
 export const GET_PRICE = "GET_PRICE";
 
 export const SET_VISIBLE = "SET_VISIBLE";

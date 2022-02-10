@@ -46,7 +46,7 @@ export default function HoldPopup({ popup, setPopup, asset }) {
         <div className="box">
           <div className="headertitle">
             <img
-              src="images/close.svg"
+              src="/images/close.svg"
               alt="close"
               width={15}
               height={15}
@@ -55,7 +55,7 @@ export default function HoldPopup({ popup, setPopup, asset }) {
             />
             <h1>HOLD</h1>
             <img
-              src="images/close.svg"
+              src="/images/close.svg"
               alt="close"
               width={15}
               height={15}
@@ -69,7 +69,7 @@ export default function HoldPopup({ popup, setPopup, asset }) {
               <div className="assetcontainer">
                 <div className="left">
                   <img
-                    src="images/dashboard/ebct.svg"
+                    src="/images/dashboard/ebct.svg"
                     alt="ebct"
                     width={30}
                     height={30}
@@ -82,7 +82,7 @@ export default function HoldPopup({ popup, setPopup, asset }) {
                 <div className="right">
                   <div className="imgbox">
                     <img
-                      src="images/header/info.svg"
+                      src="/images/header/info.svg"
                       alt="info"
                       width={20}
                       height={20}

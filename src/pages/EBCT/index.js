@@ -59,10 +59,19 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 function EBCT() {
   const dispatch = useDispatch();
   const isVisible = useSelector((state) => state.config.isVisible);
+  const user = useSelector((state) => state.auth.user);
+  const prices = useSelector((state) => state.price.prices);
 
   const [time, setTime] = useState("7 days");
   const [asset, setAsset] = useState();
   const [popup, setPopup] = useState(0);
+
+  const levels = [
+    { name: "Bronze", img: "bronze.svg" },
+    { name: "Silver", img: "silver.svg" },
+    { name: "Gold", img: "gold.svg" },
+    { name: "Diamond", img: "diamond.svg" },
+  ];
 
   const handleChange = (event) => {
     setTime(event.target.value);
@@ -197,6 +206,25 @@ function EBCT() {
     setTransactions((transactions) => [...tempTransactions]);
   }, [filter]);
 
+  const calcAssetWalletValue = (asset, turnToString = true) => {
+    const val = user.wallet.assets[asset].wallet * prices[asset];
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
+
+  const calcAssetholdingValue = (asset, turnToString = true) => {
+    const val = user.wallet.assets[asset].holding * prices[asset];
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
+
+  const calcAssetTotalValue = (asset, turnToString = true) => {
+    const val =
+      calcAssetWalletValue(asset, false) + calcAssetholdingValue(asset, false);
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
+
   return (
     <main className="EBCT">
       <Header page="EBCT" />
@@ -207,15 +235,25 @@ function EBCT() {
             <div className="earnings">
               <div className="earnbox">
                 <h6>24h earnings</h6>
-                <h4>{isVisible ? "$0.00" : "---"}</h4>
+                <h4>
+                  {isVisible ? "$" + user.wallet.earnings.dailyEarnings : "---"}
+                </h4>
               </div>
               <div className="earnbox">
                 <h6>7d earnings</h6>
-                <h4>{isVisible ? "$0.00" : "---"}</h4>
+                <h4>
+                  {isVisible
+                    ? "$" + user.wallet.earnings.weeklyEarnings
+                    : "---"}
+                </h4>
               </div>
               <div className="earnbox">
                 <h6>30d earnings</h6>
-                <h4>{isVisible ? "$0.00" : "---"}</h4>
+                <h4>
+                  {isVisible
+                    ? "$" + user.wallet.earnings.monthlyEarnings
+                    : "---"}
+                </h4>
               </div>
             </div>
             <div className="chart">
@@ -230,7 +268,7 @@ function EBCT() {
                   <h4>EBCT</h4>
                 </div>
                 <div className="bottom">
-                  <h3>{isVisible ? "$0.00" : "---"}</h3>
+                  <h3>{isVisible ? `$${prices["EBCT"]}` : "---"}</h3>
                   <select name="time" id="time" onChange={handleChange}>
                     <option value="7 days">7 days</option>
                     <option value="14 days">14 days</option>
@@ -268,8 +306,16 @@ function EBCT() {
                 </div>
                 <div className="righttitle">
                   <div className="text">
-                    <h1>{isVisible ? "0.00" : "---"}</h1>
-                    <h2>{isVisible ? "$0.00" : "---"}</h2>
+                    <h1>
+                      {isVisible
+                        ? `${user.wallet.assets["EBCT"].holding}`
+                        : "---"}
+                    </h1>
+                    <h2>
+                      {isVisible
+                        ? `${"$" + calcAssetholdingValue("EBCT")}`
+                        : "---"}
+                    </h2>
                   </div>
                 </div>
               </div>
@@ -286,8 +332,16 @@ function EBCT() {
                 </div>
                 <div className="righttitle">
                   <div className="text">
-                    <h1>{isVisible ? "0.00" : "---"}</h1>
-                    <h2>{isVisible ? "$0.00" : "---"}</h2>
+                    <h1>
+                      {isVisible
+                        ? `${user.wallet.assets["EBCT"].wallet}`
+                        : "---"}
+                    </h1>
+                    <h2>
+                      {isVisible
+                        ? `${"$" + calcAssetWalletValue("EBCT")}`
+                        : "---"}
+                    </h2>
                   </div>
                 </div>
               </div>
@@ -356,14 +410,32 @@ function EBCT() {
                   </td>
                   <td>
                     <div className="column">
-                      <h4>{isVisible ? "0.00" : "---"}</h4>
-                      <h6>{isVisible ? "$0.00" : "---"}</h6>
+                      <h4>
+                        {" "}
+                        {isVisible
+                          ? `${user.wallet.assets["EBCT"].holding}`
+                          : "---"}
+                      </h4>
+                      <h6>
+                        {" "}
+                        {isVisible
+                          ? `${"$" + calcAssetholdingValue("EBCT")}`
+                          : "---"}
+                      </h6>
                     </div>
                   </td>
                   <td>
                     <div className="column">
-                      <h4>{isVisible ? "0.00" : "---"}</h4>
-                      <h6>{isVisible ? "$0.00" : "---"}</h6>
+                      <h4>
+                        {isVisible
+                          ? `${user.wallet.assets["EBCT"].wallet}`
+                          : "---"}
+                      </h4>
+                      <h6>
+                        {isVisible
+                          ? `${"$" + calcAssetWalletValue("EBCT")}`
+                          : "---"}
+                      </h6>
                     </div>
                   </td>
                   <td>
@@ -414,12 +486,12 @@ function EBCT() {
               <div className="earnbox">
                 <span>
                   <img
-                    src="/images/karma/bronze.svg"
+                    src={`/images/karma/${levels[user.level - 1].img}`}
                     alt="bronze"
                     width={25}
                     height={25}
                   />
-                  <strong>Bronze</strong>
+                  <strong>{levels[user.level - 1].name}</strong>
                   tier
                 </span>
                 <div className="linegraph">
@@ -431,7 +503,7 @@ function EBCT() {
                 </div>
                 <p>
                   Stake or lock {isVisible ? "5,000" : "-"} more EBCT to react
-                  Level 2.
+                  Level {user.level + 1}.
                 </p>
               </div>
             </div>

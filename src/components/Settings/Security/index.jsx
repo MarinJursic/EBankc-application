@@ -86,7 +86,7 @@ function TwoFactorModal({ open, setOpen, setContinue }) {
           </button>
           <h4>2FA code</h4>
           <ReactCodeInput
-            type="text"
+            type="number"
             fields={6}
             onChange={(val) => setCode(val)}
           />
@@ -177,7 +177,7 @@ function ChangePassword({ twoFactorEnabled }) {
           <div className="twoFactorCode">
             <h4>2FA code</h4>
             <ReactCodeInput
-              type="text"
+              type="number"
               fields={6}
               onChange={(val) => setCode(val)}
             />
@@ -221,7 +221,7 @@ function ChangeEmail({ twoFactorEnabled }) {
           <div className="twoFactorCode">
             <h4>2FA code</h4>
             <ReactCodeInput
-              type="text"
+              type="number"
               fields={6}
               onChange={(val) => setCode(val)}
             />
@@ -308,7 +308,7 @@ function TwoFactorAuth({ twoFactorEnabled, setTwoFactorEnabled }) {
             <div className="twoFactorCode">
               <h4>2FA code</h4>
               <ReactCodeInput
-                type="text"
+                type="number"
                 fields={6}
                 onChange={(val) => setCode(val)}
               />

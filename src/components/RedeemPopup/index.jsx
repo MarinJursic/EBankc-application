@@ -22,27 +22,27 @@ export default function RedeemPopup({ popup, setPopup, asset }) {
     {
       name: "BTC",
       full: "Bitcoin",
-      icon: "images/dashboard/bitcoin.svg",
+      icon: "/images/dashboard/bitcoin.svg",
     },
     {
       name: "ETH",
       full: "Ethereum",
-      icon: "images/dashboard/ethereum.svg",
+      icon: "/images/dashboard/ethereum.svg",
     },
     {
       name: "BNB",
       full: "Binance Coin",
-      icon: "images/dashboard/bnb.svg",
+      icon: "/images/dashboard/bnb.svg",
     },
     {
       name: "USDC",
       full: "USD Coin",
-      icon: "images/dashboard/usdc.svg",
+      icon: "/images/dashboard/usdc.svg",
     },
     {
       name: "USDT",
       full: "Tether",
-      icon: "images/dashboard/usdt.svg",
+      icon: "/images/dashboard/usdt.svg",
     },
   ];
 
@@ -96,7 +96,7 @@ export default function RedeemPopup({ popup, setPopup, asset }) {
         <div className="box">
           <div className="headertitle">
             <img
-              src="images/close.svg"
+              src="/images/close.svg"
               alt="close"
               width={15}
               height={15}
@@ -105,7 +105,7 @@ export default function RedeemPopup({ popup, setPopup, asset }) {
             />
             <h1>REDEEM</h1>
             <img
-              src="images/close.svg"
+              src="/images/close.svg"
               alt="close"
               width={15}
               height={15}

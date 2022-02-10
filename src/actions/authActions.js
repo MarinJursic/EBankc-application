@@ -8,6 +8,7 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   UPDATE_USER,
+  UPDATE_WALLET,
 } from "./types";
 
 import { returnErrors } from "./errorActions";
@@ -16,39 +17,63 @@ export const loadUser = () => (dispatch, getState) => {
   dispatch({ type: USER_LOADING });
 };
 
+export const convertAssets =
+  (assetFrom, assetTo, amount) => (dispatch, getState) => {
+    const wallet = getState().auth.user.wallet;
+    const prices = getState().price.prices;
+
+    wallet.assets[assetFrom].wallet -= amount;
+
+    const convertedAmount = (amount * prices[assetFrom]) / prices[assetTo];
+
+    wallet.assets[assetTo].wallet += convertedAmount;
+
+    dispatch({
+      type: UPDATE_WALLET,
+      payload: wallet,
+    });
+  };
+
 export const registerUser =
   ({ email, password }) =>
   (dispatch) => {
     const name = email.substring(0, email.indexOf("@"));
 
     const wallet = {
-      EBCT: {
-        wallet: 1928,
-        deployed: 967,
+      earnings: {
+        dailyEarnings: 1000,
+        weeklyEarnings: 2800,
+        monthlyEarnings: 4500,
       },
-      BTC: {
-        wallet: 1986,
-        deployed: 187,
-      },
-      ETH: {
-        wallet: 1312,
-        deployed: 321,
-      },
-      BNB: {
-        wallet: 1965,
-        deployed: 567,
-      },
-      USDC: {
-        wallet: 1928,
-        deployed: 860,
-      },
-      USDT: {
-        wallet: 1950,
-        deployed: 870,
+      assets: {
+        EBCT: {
+          wallet: 1928,
+          holding: 967,
+        },
+        BTC: {
+          wallet: 1986,
+          holding: 123456789123,
+        },
+        ETH: {
+          wallet: 1312,
+          holding: 123456789123456789,
+        },
+        BNB: {
+          wallet: 1965,
+          holding: 9999999999999,
+        },
+        USDC: {
+          wallet: 1928,
+          holding: 860,
+        },
+        USDT: {
+          wallet: 1950,
+          holding: 870,
+        },
       },
     };
 
-    const level = 1;
+    const level = 2;
 
     const user = { name, email, password, country: "USA", wallet, level };
 
@@ -64,33 +89,40 @@ export const loginUser =
     const name = email.substring(0, email.indexOf("@"));
 
     const wallet = {
-      EBCT: {
-        wallet: 1928,
-        deployed: 967,
+      earnings: {
+        dailyEarnings: 1000,
+        weeklyEarnings: 2800,
+        monthlyEarnings: 4500,
       },
-      BTC: {
-        wallet: 1986,
-        deployed: 187,
-      },
-      ETH: {
-        wallet: 1312,
-        deployed: 321,
-      },
-      BNB: {
-        wallet: 1965,
-        deployed: 567,
-      },
-      USDC: {
-        wallet: 1928,
-        deployed: 860,
-      },
-      USDT: {
-        wallet: 1950,
-        deployed: 870,
+      assets: {
+        EBCT: {
+          wallet: 11,
+          holding: 23,
+        },
+        BTC: {
+          wallet: 1,
+          holding: 2,
+        },
+        ETH: {
+          wallet: 24,
+          holding: 0.5,
+        },
+        BNB: {
+          wallet: 7.9,
+          holding: 56.7,
+        },
+        USDC: {
+          wallet: 2050,
+          holding: 100,
+        },
+        USDT: {
+          wallet: 3078,
+          holding: 200,
+        },
       },
     };
 
-    const level = 1;
+    const level = 2;
 
     const user = { name, email, password, country: "USA", wallet, level };
 

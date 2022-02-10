@@ -18,12 +18,19 @@ function Header({ page }) {
 
   const [menu, setMenu] = useState(false);
 
+  const levels = [
+    { name: "Bronze", img: "bronze.svg" },
+    { name: "Silver", img: "silver.svg" },
+    { name: "Gold", img: "gold.svg" },
+    { name: "Diamond", img: "diamond.svg" },
+  ];
+
   const routeInfo = {
     Dashboard: {
       icon: "/images/navigation/dashboard.svg",
       subtitle: "Account value",
       tooltip:
-        "This is the aggregate sum of all of your balances on the platform, converted into USD. The sum includes all wallet balances, stake balances and lock balances. It does not include pending balances or balances on hold.",
+        "This is the aggregate sum of all of your balances on the platform, converted into USD. The sum includes all wallet balances, stake balances and hold balances. It does not include pending balances or balances on hold.",
       btn1: "DEPOSIT",
       btn1Icon: "/images/header/deposit.svg",
       btn2: "WITHDRAW",
@@ -40,9 +47,9 @@ function Header({ page }) {
     },
     Earn: {
       icon: "/images/navigation/earn.svg",
-      subtitle: "Total deployed",
+      subtitle: "Total Holding",
       tooltip:
-        "Estimated total value of your staked, locked and deployed assets, expressed in USD",
+        "Estimated total value of your staked, locked and holding assets, expressed in USD",
       btn1: "EARN",
       btn1Icon: "/images/dashboard/earn.svg",
       btn2: "REDEEM",
@@ -115,22 +122,20 @@ function Header({ page }) {
   ];
 
   const calcAssetWalletValue = (asset, turnToString = true) => {
-    const val =
-      Math.round(user.wallet[asset].wallet * prices[asset] * 100) / 100;
+    const val = user.wallet.assets[asset].wallet * prices[asset];
 
     return turnToString ? val.toLocaleString("en-US") : val;
   };
 
-  const calcAssetDeployedValue = (asset, turnToString = true) => {
-    const val =
-      Math.round(user.wallet[asset].deployed * prices[asset] * 100) / 100;
+  const calcAssetholdingValue = (asset, turnToString = true) => {
+    const val = user.wallet.assets[asset].holding * prices[asset];
 
     return turnToString ? val.toLocaleString("en-US") : val;
   };
 
   const calcAssetTotalValue = (asset, turnToString = true) => {
     const val =
-      calcAssetWalletValue(asset, false) + calcAssetDeployedValue(asset, false);
+      calcAssetWalletValue(asset, false) + calcAssetholdingValue(asset, false);
 
     return turnToString ? val.toLocaleString("en-US") : val;
   };
@@ -138,8 +143,27 @@ function Header({ page }) {
   const getAccValue = () => {
     let sum = 0;
 
-    for (const [asset, val] of Object.entries(user.wallet)) {
-      sum += calcAssetTotalValue(asset, false);
+    if (page === "EBCT") {
+      sum = calcAssetTotalValue("EBCT", false);
+      return (Math.round(sum * 100) / 100).toLocaleString("en-US");
+    }
+
+    for (const [asset, _] of Object.entries(user.wallet.assets)) {
+      let val = 0;
+
+      switch (page) {
+        case "Wallet":
+          val = calcAssetWalletValue(asset, false);
+          break;
+        case "Earn":
+          val = calcAssetholdingValue(asset, false);
+          break;
+        default:
+          val = calcAssetTotalValue(asset, false);
+          break;
+      }
+
+      sum += val;
     }
 
     return (Math.round(sum * 100) / 100).toLocaleString("en-US");
@@ -218,7 +242,7 @@ function Header({ page }) {
         </span>
         <span className="mInfo">
           <img
-            src="/images/karma/bronze.svg"
+            src={`/images/karma/${levels[user.level - 1].img}`}
             alt="level"
             width={25}
             height={25}
@@ -257,7 +281,7 @@ function Header({ page }) {
             >
               <div className="mColumn">
                 <h3>EBankc App User</h3>
-                <h4>Bronze Tier</h4>
+                <h4>{levels[user.level - 1].name} Tier</h4>
               </div>
               {!dropdown ? (
                 <img

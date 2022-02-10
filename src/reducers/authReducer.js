@@ -8,6 +8,7 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   UPDATE_USER,
+  UPDATE_WALLET,
 } from "../actions/types";
 
 const initialState = {
@@ -58,6 +59,12 @@ export default function authReducer(state = initialState, action) {
         token: null,
         isLoading: false,
         user: null,
+      };
+
+    case UPDATE_WALLET:
+      return {
+        ...state,
+        user: { ...state.user, wallet: action.payload },
       };
 
     default:

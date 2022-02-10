@@ -42,31 +42,31 @@ export default function DepositPopup({ popup, setPopup, type }) {
     {
       name: "BTC",
       full: "Bitcoin",
-      icon: "images/dashboard/bitcoin.svg",
+      icon: "/images/dashboard/bitcoin.svg",
       min: 0.01,
     },
     {
       name: "ETH",
       full: "Ethereum",
-      icon: "images/dashboard/ethereum.svg",
+      icon: "/images/dashboard/ethereum.svg",
       min: 0.1,
     },
     {
       name: "BNB",
       full: "Binance Coin",
-      icon: "images/dashboard/bnb.svg",
+      icon: "/images/dashboard/bnb.svg",
       min: 100,
     },
     {
       name: "USDC",
       full: "USD Coin",
-      icon: "images/dashboard/usdc.svg",
+      icon: "/images/dashboard/usdc.svg",
       min: 100,
     },
     {
       name: "USDT",
       full: "Tether",
-      icon: "images/dashboard/usdt.svg",
+      icon: "/images/dashboard/usdt.svg",
       min: 100,
     },
   ];
@@ -87,7 +87,7 @@ export default function DepositPopup({ popup, setPopup, type }) {
           <div className="box">
             <div className="headertitle">
               <img
-                src="images/close.svg"
+                src="/images/close.svg"
                 alt="close"
                 width={15}
                 height={15}
@@ -96,7 +96,7 @@ export default function DepositPopup({ popup, setPopup, type }) {
               />
               <h1>WITHDRAW</h1>
               <img
-                src="images/close.svg"
+                src="/images/close.svg"
                 alt="close"
                 width={15}
                 height={15}
@@ -250,7 +250,7 @@ export default function DepositPopup({ popup, setPopup, type }) {
           <div className="box">
             <div className="headertitle">
               <img
-                src="images/close.svg"
+                src="/images/close.svg"
                 alt="close"
                 width={15}
                 height={15}
@@ -259,7 +259,7 @@ export default function DepositPopup({ popup, setPopup, type }) {
               />
               <h1>DEPOSIT</h1>
               <img
-                src="images/close.svg"
+                src="/images/close.svg"
                 alt="close"
                 width={15}
                 height={15}

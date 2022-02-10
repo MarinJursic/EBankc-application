@@ -6,20 +6,39 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { Link } from "react-router-dom";
 import "./styles.scss";
 import DepositWithdrawPopup from "../../components/DepositWithdrawPopup";
+import { useDispatch, useSelector } from "react-redux";
 
 function WalletMobile() {
-  const [visible, setVisible] = useState(false);
+  const dispatch = useDispatch();
+  const isVisible = useSelector((state) => state.config.isVisible);
+  const prices = useSelector((state) => state.price.prices);
+  const user = useSelector((state) => state.auth.user);
+
+  const calcAssetWalletValue = (asset, turnToString = true) => {
+    const val =
+      Math.round(user.wallet.assets[asset].wallet * prices[asset] * 100) / 100;
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
+
+  const calcAssetholdingValue = (asset, turnToString = true) => {
+    const val =
+      Math.round(user.wallet.assets[asset].holding * prices[asset] * 100) / 100;
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
+
+  const calcAssetTotalValue = (asset, turnToString = true) => {
+    const val =
+      calcAssetWalletValue(asset, false) + calcAssetholdingValue(asset, false);
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
 
   const [popup, setPopup] = useState(0);
   const [asset, setAsset] = useState(0);
 
   const [active, setActive] = useState(0);
-
-  const [time, setTime] = React.useState("7 days");
-
-  const handleChange = (event) => {
-    setTime(event.target.value);
-  };
 
   const assets = [
     {
@@ -175,7 +194,21 @@ function WalletMobile() {
       case 3:
         return <EarnPopup popup={popup} setPopup={setPopup} asset={asset} />;
       case 4:
-        return <DepositWithdrawPopup popup={popup} setPopup={setPopup} />;
+        return (
+          <DepositWithdrawPopup
+            popup={popup}
+            setPopup={setPopup}
+            type={"deposit"}
+          />
+        );
+      case 5:
+        return (
+          <DepositWithdrawPopup
+            popup={popup}
+            setPopup={setPopup}
+            type={"withdraw"}
+          />
+        );
       default:
         break;
     }
@@ -185,20 +218,6 @@ function WalletMobile() {
     <section className="mobile">
       {popup !== 0 && getPopup()}
       <div className="leftside">
-        <div className="earnings">
-          <div className="earnbox">
-            <h6>24h earnings</h6>
-            <h4>---</h4>
-          </div>
-          <div className="earnbox">
-            <h6>7d earnings</h6>
-            <h4>---</h4>
-          </div>
-          <div className="earnbox">
-            <h6>30d earnings</h6>
-            <h4>---</h4>
-          </div>
-        </div>
         <div className="ebct">
           <button className="title">
             <div className="lefttitle">
@@ -213,8 +232,17 @@ function WalletMobile() {
             </div>
             <div className="righttitle">
               <div className="text">
-                <h1>---</h1>
-                <h2>--</h2>
+                <h1>
+                  {isVisible
+                    ? `${
+                        user.wallet.assets["EBCT"].wallet +
+                        user.wallet.assets["EBCT"].holding
+                      }`
+                    : "---"}
+                </h1>
+                <h2>
+                  {isVisible ? `${"$" + calcAssetTotalValue("EBCT")}` : "--"}
+                </h2>
               </div>
               <div className="menuicon" onClick={() => handleActive(1)}>
                 {active === 1 ? (
@@ -239,8 +267,16 @@ function WalletMobile() {
               </div>
               <div className="righttitle">
                 <div className="text">
-                  <h1>---</h1>
-                  <h2>--</h2>
+                  <h1>
+                    {isVisible
+                      ? `${user.wallet.assets["EBCT"].holding}`
+                      : "---"}
+                  </h1>
+                  <h2>
+                    {isVisible
+                      ? `${"$" + calcAssetholdingValue("EBCT")}`
+                      : "--"}
+                  </h2>
                 </div>
                 <div className="menuicon notvisible">
                   <MdKeyboardArrowDown size={30} />
@@ -260,8 +296,12 @@ function WalletMobile() {
               </div>
               <div className="righttitle">
                 <div className="text">
-                  <h1>---</h1>
-                  <h2>--</h2>
+                  <h1>
+                    {isVisible ? `${user.wallet.assets["EBCT"].wallet}` : "---"}
+                  </h1>
+                  <h2>
+                    {isVisible ? `${"$" + calcAssetWalletValue("EBCT")}` : "--"}
+                  </h2>
                 </div>
                 <div className="menuicon notvisible">
                   <MdKeyboardArrowDown size={30} />
@@ -310,8 +350,19 @@ function WalletMobile() {
                 </div>
                 <div className="righttitle">
                   <div className="text">
-                    <h1>---</h1>
-                    <h2>--</h2>
+                    <h1>
+                      {isVisible
+                        ? `${
+                            user.wallet.assets[asset.name].wallet +
+                            user.wallet.assets[asset.name].holding
+                          }`
+                        : "---"}
+                    </h1>
+                    <h2>
+                      {isVisible
+                        ? `${"$" + calcAssetTotalValue(asset.name)}`
+                        : "--"}
+                    </h2>
                   </div>
                   <div
                     className="menuicon"
@@ -341,8 +392,16 @@ function WalletMobile() {
                   </div>
                   <div className="righttitle">
                     <div className="text">
-                      <h1>---</h1>
-                      <h2>--</h2>
+                      <h1>
+                        {isVisible
+                          ? `${user.wallet.assets[asset.name].holding}`
+                          : "---"}
+                      </h1>
+                      <h2>
+                        {isVisible
+                          ? `${"$" + calcAssetholdingValue(asset.name)}`
+                          : "--"}
+                      </h2>
                     </div>
                     <div className="menuicon notvisible">
                       <MdKeyboardArrowDown size={30} />
@@ -362,8 +421,16 @@ function WalletMobile() {
                   </div>
                   <div className="righttitle">
                     <div className="text">
-                      <h1>---</h1>
-                      <h2>--</h2>
+                      <h1>
+                        {isVisible
+                          ? `${user.wallet.assets[asset.name].wallet}`
+                          : "---"}
+                      </h1>
+                      <h2>
+                        {isVisible
+                          ? `${"$" + calcAssetWalletValue(asset.name)}`
+                          : "---"}
+                      </h2>
                     </div>
                     <div className="menuicon notvisible">
                       <MdKeyboardArrowDown size={30} />

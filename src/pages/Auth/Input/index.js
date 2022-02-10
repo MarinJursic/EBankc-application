@@ -49,6 +49,7 @@ export default function Input({
           ref={inputRef}
           type={isPassword && !isVisible ? "password" : type}
           onChange={(e) => setValue(e.target.value)}
+          autoComplete={!isPassword && "email"}
         />
         {isPassword && (
           <img
