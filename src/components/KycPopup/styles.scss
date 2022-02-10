@@ -1,4 +1,4 @@
-.depositpopup {
+.kycpopup {
   width: 100%;
   height: 100%;
   display: flex;
@@ -65,7 +65,8 @@
       text-shadow: rgba(0, 0, 0, 0.2);
     }
 
-    button {
+    a {
+      text-decoration: none;
       outline: none;
       border: none;
       background-color: #013220;
@@ -74,6 +75,8 @@
       color: white;
       font-family: "Source Sans Pro Regular", sans-serif;
       font-size: 1.1em;
+      color: white;
+      text-align: center;
 
       &:hover {
         cursor: pointer;
@@ -89,7 +92,7 @@
 }
 
 @media only screen and (max-width: 600px) {
-  .depositpopup {
+  .kycpopup {
     .box {
       width: 100%;
       height: 100%;

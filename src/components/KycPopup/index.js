@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { Modal } from "@material-ui/core";
 import "./styles.scss";
 
-export default function DepositPopup({ popup, setPopup }) {
+import { Link } from "react-router-dom";
+
+export default function KycPopup({ popup, setPopup }) {
   const handleClose = () => {
     setPopup(0);
   };
 
   return (
     <Modal open={popup !== 0 ? true : false}>
-      <section className="depositpopup">
+      <section className="kycpopup">
         <div className="box">
           <div className="headertitle">
             <img
@@ -34,7 +36,8 @@ export default function DepositPopup({ popup, setPopup }) {
               Please verify your identity with us. It helps to ensure your
               account is secure and in compliance with the law.
             </p>
-            <button>BEGIN KYC</button>
+
+            <Link to="/settings?openQuery=1">BEGIN KYC</Link>
           </div>
         </div>
       </section>

@@ -1,48 +1,85 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./styles.scss";
 import { Link } from "react-router-dom";
-import DepositPopup from "../DepositPopup";
+import DepositWithdrawPopup from "../DepositWithdrawPopup";
 import MobileMenu from "../MobileMenu";
+import RedeemPopup from "../RedeemPopup";
+import EarnPopup from "../EarnPopup";
+
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../actions/authActions";
+import { setVisible } from "../../actions/configActions";
 
 function Header({ page }) {
+  const dispatch = useDispatch();
+  const isVisible = useSelector((state) => state.config.isVisible);
+  const prices = useSelector((state) => state.price.prices);
+  const user = useSelector((state) => state.auth.user);
+
   const [menu, setMenu] = useState(false);
 
   const routeInfo = {
     Dashboard: {
-      icon: "images/navigation/dashboard.svg",
+      icon: "/images/navigation/dashboard.svg",
       subtitle: "Account value",
       tooltip:
         "This is the aggregate sum of all of your balances on the platform, converted into USD. The sum includes all wallet balances, stake balances and lock balances. It does not include pending balances or balances on hold.",
       btn1: "DEPOSIT",
-      btn1Icon: "images/header/deposit.svg",
+      btn1Icon: "/images/header/deposit.svg",
       btn2: "WITHDRAW",
-      btn2Icon: "images/header/withdraw.svg",
+      btn2Icon: "/images/header/withdraw.svg",
     },
     Wallet: {
-      icon: "images/navigation/wallet.svg",
+      icon: "/images/navigation/wallet.svg",
       subtitle: "Available",
       tooltip: "The value of your wallet balances, estimated in USD",
       btn1: "DEPOSIT",
-      btn1Icon: "images/header/deposit.svg",
+      btn1Icon: "/images/header/deposit.svg",
       btn2: "WITHDRAW",
-      btn2Icon: "images/header/withdraw.svg",
+      btn2Icon: "/images/header/withdraw.svg",
     },
     Earn: {
-      icon: "images/navigation/earn.svg",
+      icon: "/images/navigation/earn.svg",
       subtitle: "Total deployed",
       tooltip:
         "Estimated total value of your staked, locked and deployed assets, expressed in USD",
       btn1: "EARN",
+      btn1Icon: "/images/dashboard/earn.svg",
       btn2: "REDEEM",
+      btn2Icon: "/images/dashboard/redeem.svg",
     },
     EBCT: {
-      icon: "images/navigation/EBCT.svg",
+      icon: "/images/ebct.svg",
       subtitle: "Total amount",
       tooltip: "",
       btn1: "DEPOSIT",
-      btn1Icon: "images/header/deposit.svg",
+      btn1Icon: "/images/header/deposit.svg",
       btn2: "WITHDRAW",
-      btn2Icon: "images/header/withdraw.svg",
+      btn2Icon: "/images/header/withdraw.svg",
+    },
+    Convert: {
+      icon: "/images/navigation/convert.svg",
+      subtitle: "Total amount",
+      tooltip: "",
+      removeBottom: true,
+    },
+    Buy: {
+      icon: "/images/navigation/buy.svg",
+      subtitle: "",
+      tooltip: "",
+      removeBottom: true,
+    },
+    Transactions: {
+      icon: "/images/navigation/transaction.svg",
+      subtitle: "Total amount",
+      tooltip: "",
+      removeBottom: true,
+    },
+    Settings: {
+      icon: "/images/settings/activity.svg",
+      subtitle: "Total amount",
+      tooltip: "",
+      removeBottom: true,
     },
   };
 
@@ -77,12 +114,42 @@ function Header({ page }) {
     },
   ];
 
+  const calcAssetWalletValue = (asset, turnToString = true) => {
+    const val =
+      Math.round(user.wallet[asset].wallet * prices[asset] * 100) / 100;
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
+
+  const calcAssetDeployedValue = (asset, turnToString = true) => {
+    const val =
+      Math.round(user.wallet[asset].deployed * prices[asset] * 100) / 100;
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
+
+  const calcAssetTotalValue = (asset, turnToString = true) => {
+    const val =
+      calcAssetWalletValue(asset, false) + calcAssetDeployedValue(asset, false);
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
+
+  const getAccValue = () => {
+    let sum = 0;
+
+    for (const [asset, val] of Object.entries(user.wallet)) {
+      sum += calcAssetTotalValue(asset, false);
+    }
+
+    return (Math.round(sum * 100) / 100).toLocaleString("en-US");
+  };
+
   const [dropdown, setDropdown] = useState(false);
-  const [visible, setVisible] = useState(false);
   const [buttonPopup, setButtonPopup] = useState(0);
 
   const handleVisible = () => {
-    setVisible((visible) => !visible);
+    dispatch(setVisible(!isVisible));
   };
 
   const handleButton = (type) => {
@@ -91,7 +158,7 @@ function Header({ page }) {
         setButtonPopup(1);
         break;
       case "WITHDRAW":
-        setButtonPopup(1);
+        setButtonPopup(2);
         break;
       case "EARN":
         setButtonPopup(3);
@@ -107,13 +174,25 @@ function Header({ page }) {
   const getButtonPopup = () => {
     switch (buttonPopup) {
       case 1:
-        return <DepositPopup popup={buttonPopup} setPopup={setButtonPopup} />;
+        return (
+          <DepositWithdrawPopup
+            popup={buttonPopup}
+            setPopup={setButtonPopup}
+            type={"deposit"}
+          />
+        );
       case 2:
-        return <DepositPopup popup={buttonPopup} setPopup={setButtonPopup} />;
+        return (
+          <DepositWithdrawPopup
+            popup={buttonPopup}
+            setPopup={setButtonPopup}
+            type={"withdraw"}
+          />
+        );
       case 3:
-        return <div>Hi there</div>;
+        return <EarnPopup popup={buttonPopup} setPopup={setButtonPopup} />;
       case 4:
-        return <div>Wassup</div>;
+        return <RedeemPopup popup={buttonPopup} setPopup={setButtonPopup} />;
       default:
         break;
     }
@@ -139,15 +218,15 @@ function Header({ page }) {
         </span>
         <span className="mInfo">
           <img
-            src="images/header/bronze.svg"
+            src="/images/karma/bronze.svg"
             alt="level"
             width={25}
             height={25}
-            className="mOutside"
+            className="mOutside level"
           />
           <div className="rmobile">
             <img
-              src={menu ? "images/close.svg" : "images/header/menu.svg"}
+              src={menu ? "/images/close.svg" : "/images/header/menu.svg"}
               alt="menu"
               width={menu ? 20 : 25}
               height={menu ? 20 : 25}
@@ -157,7 +236,7 @@ function Header({ page }) {
           </div>
           <div className="rtwo">
             <img
-              src="images/header/notification.svg"
+              src="/images/header/notification.svg"
               alt="level"
               width={25}
               height={25}
@@ -180,9 +259,9 @@ function Header({ page }) {
                 <h3>EBankc App User</h3>
                 <h4>Bronze Tier</h4>
               </div>
-              {dropdown ? (
+              {!dropdown ? (
                 <img
-                  src="images/header/down.svg"
+                  src="/images/header/down.svg"
                   alt="down"
                   width={20}
                   height={20}
@@ -190,7 +269,7 @@ function Header({ page }) {
                 />
               ) : (
                 <img
-                  src="images/header/up.svg"
+                  src="/images/header/up.svg"
                   alt="up"
                   height={20}
                   width={20}
@@ -203,7 +282,7 @@ function Header({ page }) {
                     <li>
                       <Link to="/settings">
                         <img
-                          src="images/header/settings.svg"
+                          src="/images/header/settings.svg"
                           alt="settings"
                           width={20}
                           height={20}
@@ -214,7 +293,7 @@ function Header({ page }) {
                     <li>
                       <Link to="/support">
                         <img
-                          src="images/header/support.svg"
+                          src="/images/header/support.svg"
                           alt="support"
                           width={20}
                           height={20}
@@ -223,9 +302,9 @@ function Header({ page }) {
                       </Link>
                     </li>
                     <li>
-                      <Link to="/logout">
+                      <Link to="/login" onClick={() => dispatch(logout())}>
                         <img
-                          src="images/header/logout.svg"
+                          src="/images/header/logout.svg"
                           alt="logout"
                           width={20}
                           height={20}
@@ -240,7 +319,7 @@ function Header({ page }) {
           </div>
         </span>
       </div>
-      {routeInfo[page] && (
+      {routeInfo[page] && !routeInfo[page].removeBottom && (
         <div className="mRow">
           <span className="mLeft">
             <span>
@@ -248,9 +327,9 @@ function Header({ page }) {
               <img
                 onClick={handleVisible}
                 src={
-                  visible
-                    ? "images/header/crossed.svg"
-                    : "images/header/eye.svg"
+                  isVisible
+                    ? "/images/header/crossed.svg"
+                    : "/images/header/eye.svg"
                 }
                 alt="eye"
                 width={20}
@@ -259,36 +338,44 @@ function Header({ page }) {
               />
             </span>
             <span>
-              <h1>{visible ? "$0.00" : "---"}</h1>
-              <img
-                src="images/header/info.svg"
-                alt="eye"
-                width={20}
-                height={20}
-                className="mInfo"
-              />
-              <p className="mTooltip">{routeInfo[page].tooltip}</p>
+              <h1>{isVisible ? `${"$" + getAccValue() || "0.00"}` : "---"}</h1>
+              {routeInfo[page].tooltip !== "" && (
+                <>
+                  <img
+                    src="/images/header/info.svg"
+                    alt="eye"
+                    width={20}
+                    height={20}
+                    className="mInfo"
+                  />
+                  <p className="mTooltip">{routeInfo[page].tooltip}</p>
+                </>
+              )}
             </span>
           </span>
           <div className="mRight">
-            <button onClick={() => handleButton(routeInfo[page].btn1)}>
-              <img
-                src={routeInfo[page].btn1Icon}
-                alt="btnIcon"
-                width={20}
-                height={20}
-              />
-              <h3>{routeInfo[page].btn1}</h3>
-            </button>
-            <button onClick={() => handleButton(routeInfo[page].btn2)}>
-              <img
-                src={routeInfo[page].btn2Icon}
-                alt="btnIcon"
-                width={20}
-                height={20}
-              />
-              <h3>{routeInfo[page].btn2}</h3>
-            </button>
+            {routeInfo[page].btn1 && (
+              <button onClick={() => handleButton(routeInfo[page].btn1)}>
+                <img
+                  src={routeInfo[page].btn1Icon}
+                  alt="btnIcon"
+                  width={20}
+                  height={20}
+                />
+                <h3>{routeInfo[page].btn1}</h3>
+              </button>
+            )}
+            {routeInfo[page].btn2 && (
+              <button onClick={() => handleButton(routeInfo[page].btn2)}>
+                <img
+                  src={routeInfo[page].btn2Icon}
+                  alt="btnIcon"
+                  width={20}
+                  height={20}
+                />
+                <h3>{routeInfo[page].btn2}</h3>
+              </button>
+            )}
           </div>
         </div>
       )}

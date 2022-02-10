@@ -324,3 +324,24 @@
     }
   }
 }
+
+@media only screen and (max-width: 650px) {
+  .redeempopup {
+    .box {
+      border-radius: 0 !important;
+
+      .headertitle {
+        border-radius: 0 !important;
+        background-color: darkgreen !important;
+        h1 {
+          color: white !important;
+        }
+
+        img {
+          filter: invert(100%) sepia(100%) saturate(38%) hue-rotate(321deg)
+            brightness(110%) contrast(110%) !important;
+        }
+      }
+    }
+  }
+}

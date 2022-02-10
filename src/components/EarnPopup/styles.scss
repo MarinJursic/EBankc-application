@@ -352,23 +352,23 @@
     height: 100% !important;
     padding: 0 !important;
     border-radius: 0 !important;
-  }
 
-  .box {
-    width: 100% !important;
-    height: 100% !important;
-    border-radius: 0px !important;
-  }
-
-  .headertitle {
-    background-color: darkgreen !important;
-    h1 {
-      color: white !important;
+    .box {
+      width: 100% !important;
+      height: 100% !important;
+      border-radius: 0px !important;
     }
 
-    img {
-      filter: invert(100%) sepia(100%) saturate(38%) hue-rotate(321deg)
-        brightness(110%) contrast(110%);
+    .headertitle {
+      background-color: darkgreen !important;
+      h1 {
+        color: white !important;
+      }
+
+      img {
+        filter: invert(100%) sepia(100%) saturate(38%) hue-rotate(321deg)
+          brightness(110%) contrast(110%);
+      }
     }
   }
 }

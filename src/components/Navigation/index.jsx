@@ -1,15 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./styles.scss";
 
+import { useSelector } from "react-redux";
+
 function Navigation() {
+  const isAuth = useSelector((state) => state.auth.isAuthenticated);
+
   const location = useLocation().pathname;
 
-  return (
+  const [nested, setNested] = useState(0);
+
+  console.log(location);
+
+  useEffect(() => {
+    const parsed = location.split("/");
+
+    if (parsed.length === 3 && parsed[1] === "earn") {
+      setNested(1);
+    } else {
+      setNested(0);
+    }
+  }, [location]);
+
+  return !isAuth ? null : (
     <aside className="sidemenu">
-      <a href="https://google.com" className="logo">
+      <a href="https://ebankc.netlify.app/" className="logo">
         <img
-          src="images/navigation/logo.svg"
+          src="/images/navigation/logo.svg"
           alt="logo"
           height={80}
           width={175}
@@ -25,7 +43,7 @@ function Navigation() {
                 }
               >
                 <img
-                  src="images/navigation/dashboard.svg"
+                  src="/images/navigation/dashboard.svg"
                   alt="dashboard"
                   width={20}
                   height={20}
@@ -43,7 +61,7 @@ function Navigation() {
                 }
               >
                 <img
-                  src="images/navigation/wallet.svg"
+                  src="/images/navigation/wallet.svg"
                   alt="wallet"
                   width={20}
                   height={20}
@@ -56,10 +74,14 @@ function Navigation() {
           <li>
             <Link to="/earn">
               <span
-                className={location === "/earn" ? "spanbox active" : "spanbox"}
+                className={
+                  location === "/earn" || nested === 1
+                    ? "spanbox active"
+                    : "spanbox"
+                }
               >
                 <img
-                  src="images/navigation/earn.svg"
+                  src="/images/navigation/earn.svg"
                   alt="earn"
                   width={20}
                   height={20}
@@ -75,13 +97,13 @@ function Navigation() {
                 className={location === "/ebct" ? "spanbox active" : "spanbox"}
               >
                 <img
-                  src="images/navigation/ebnk.svg"
+                  src="/images/navigation/ebnk.svg"
                   alt="ebnk"
                   width={20}
                   height={20}
                   className="routeIcon filterclass"
                 />
-                <span className="textspan">Ebnk</span>
+                <span className="textspan">Ebct</span>
               </span>
             </Link>
           </li>
@@ -93,7 +115,7 @@ function Navigation() {
                 }
               >
                 <img
-                  src="images/navigation/convert.svg"
+                  src="/images/navigation/convert.svg"
                   alt="convert"
                   width={20}
                   height={20}
@@ -109,7 +131,7 @@ function Navigation() {
                 className={location === "/buy" ? "spanbox active" : "spanbox"}
               >
                 <img
-                  src="images/navigation/buy.svg"
+                  src="/images/navigation/buy.svg"
                   alt="buy"
                   width={20}
                   height={20}
@@ -127,7 +149,7 @@ function Navigation() {
                 }
               >
                 <img
-                  src="images/navigation/transaction.svg"
+                  src="/images/navigation/transaction.svg"
                   alt="transaction"
                   width={20}
                   height={20}

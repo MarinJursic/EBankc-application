@@ -3,8 +3,27 @@ import Header from "../../components/Header";
 import "./styles.scss";
 import { Link } from "react-router-dom";
 import { MdKeyboardArrowUp, MdKeyboardArrowDown } from "react-icons/md";
+import WalletMobile from "../WalletMobile";
+import HoldPopup from "../../components/HoldPopup";
+import RedeemPopup from "../../components/RedeemPopup";
+import EarnPopup from "../../components/EarnPopup";
+import DepositWithdrawPopup from "../../components/DepositWithdrawPopup";
+
+import { useDispatch, useSelector } from "react-redux";
 
 function Wallet() {
+  const dispatch = useDispatch();
+  const isVisible = useSelector((state) => state.config.isVisible);
+
+  const [popup, setPopup] = useState(0);
+  const [asset, setAsset] = useState(0);
+
+  const [time, setTime] = React.useState("7 days");
+
+  const handleChange = (event) => {
+    setTime(event.target.value);
+  };
+
   const assets = [
     {
       name: "BTC",
@@ -136,10 +155,46 @@ function Wallet() {
 
     setTransactions((transactions) => [...tempTransactions]);
   }, [filter]);
+
+  const handlePopup = (value, assetPassed) => {
+    setPopup((popup) => value);
+    setAsset((asset) => assetPassed);
+  };
+
+  const getPopup = () => {
+    switch (popup) {
+      case 1:
+        return <HoldPopup popup={popup} setPopup={setPopup} asset={asset} />;
+      case 2:
+        return <RedeemPopup popup={popup} setPopup={setPopup} asset={asset} />;
+      case 3:
+        return <EarnPopup popup={popup} setPopup={setPopup} asset={asset} />;
+      case 4:
+        return (
+          <DepositWithdrawPopup
+            popup={popup}
+            setPopup={setPopup}
+            type={"deposit"}
+          />
+        );
+      case 5:
+        return (
+          <DepositWithdrawPopup
+            popup={popup}
+            setPopup={setPopup}
+            type={"withdraw"}
+          />
+        );
+      default:
+        break;
+    }
+  };
   return (
     <main className="wallet">
       <Header page="Wallet" />
-      <section>
+      <WalletMobile />
+      {popup !== 0 && getPopup()}
+      <section className="desktop">
         <div className="leftside">
           <div className="largebox">
             <h3>EBCT</h3>
@@ -148,8 +203,7 @@ function Wallet() {
                 <tr>
                   <th style={{ textAlign: "start" }}>Asset</th>
                   <th>In wallet</th>
-                  <th>Deployed</th>
-                  <th>Total</th>
+                  <th>Holding</th>
                   <th></th>
                 </tr>
               </thead>
@@ -166,12 +220,21 @@ function Wallet() {
                       <h4>EBCT</h4>
                     </span>
                   </td>
-                  <td>---</td>
-                  <td>---</td>
-                  <td>---</td>
+                  <td>
+                    <div className="column">
+                      <h4>{isVisible ? "0.00" : "---"}</h4>
+                      <h6>{isVisible ? "$0.00" : "---"}</h6>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="column">
+                      <h4>{isVisible ? "0.00" : "---"}</h4>
+                      <h6>{isVisible ? "$0.00" : "---"}</h6>
+                    </div>
+                  </td>
                   <td>
                     <div className="buttons">
-                      <button>
+                      <button onClick={() => handlePopup(1, "EBCT")}>
                         <span>
                           <img
                             src="images/dashboard/stake.svg"
@@ -179,10 +242,10 @@ function Wallet() {
                             height={15}
                             width={15}
                           />
-                          Stake
+                          Hold
                         </span>
                       </button>
-                      <button>
+                      <button onClick={() => handlePopup(2, "BTC")}>
                         <span>
                           <img
                             src="images/dashboard/lock.svg"
@@ -190,7 +253,7 @@ function Wallet() {
                             height={15}
                             width={15}
                           />
-                          Lock
+                          Redeem
                         </span>
                       </button>
                     </div>
@@ -207,7 +270,6 @@ function Wallet() {
                   <th style={{ textAlign: "start" }}>Asset</th>
                   <th>In wallet</th>
                   <th>Deployed</th>
-                  <th>Total</th>
                   <th></th>
                 </tr>
               </thead>
@@ -225,31 +287,40 @@ function Wallet() {
                         <h4>{asset.name}</h4>
                       </span>
                     </td>
-                    <td>---</td>
-                    <td>---</td>
-                    <td>---</td>
+                    <td>
+                      <div className="column">
+                        <h4>{isVisible ? "0.00" : "---"}</h4>
+                        <h6>{isVisible ? "$0.00" : "---"}</h6>
+                      </div>
+                    </td>
+                    <td>
+                      <div className="column">
+                        <h4>{isVisible ? "0.00" : "---"}</h4>
+                        <h6>{isVisible ? "$0.00" : "---"}</h6>
+                      </div>
+                    </td>
                     <td>
                       <div className="buttons">
-                        <button>
+                        <button onClick={() => handlePopup(4, asset.name)}>
                           <span>
                             <img
-                              src="images/dashboard/earn.svg"
+                              src="images/header/deposit.svg"
                               alt="earn"
                               height={15}
                               width={15}
                             />
-                            Earn
+                            Deposit
                           </span>
                         </button>
-                        <button>
+                        <button onClick={() => handlePopup(5, asset.name)}>
                           <span>
                             <img
-                              src="images/dashboard/redeem.svg"
+                              src="images/header/withdraw.svg"
                               alt="redeem"
                               height={15}
                               width={15}
                             />
-                            Redeem
+                            Withdraw
                           </span>
                         </button>
                       </div>

@@ -372,7 +372,7 @@ function DashboardMobile() {
                   </div>
                 </div>
                 <div className="buttonBox">
-                  <button onClick={() => handlePopup(3, "BTC")}>
+                  <button onClick={() => handlePopup(3, asset.name)}>
                     <span>
                       <img
                         src="images/dashboard/earn.svg"
@@ -383,7 +383,7 @@ function DashboardMobile() {
                       Earn
                     </span>
                   </button>
-                  <button onClick={() => handlePopup(2, "BTC")}>
+                  <button onClick={() => handlePopup(2, asset.name)}>
                     <span>
                       <img
                         src="images/dashboard/lock.svg"

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import HoldPopup from "../HoldPopup";
 import RedeemPopup from "../RedeemPopup";
-import DepositPopup from "../DepositPopup";
+import DepositWithdrawPopup from "../DepositWithdrawPopup";
 import EarnPopup from "../EarnPopup";
 
 function BottomMenu() {
@@ -34,7 +34,7 @@ function BottomMenu() {
       case 3:
         return <EarnPopup popup={popup} setPopup={setPopup} asset={asset} />;
       case 4:
-        return <DepositPopup popup={popup} setPopup={setPopup} />;
+        return <DepositWithdrawPopup popup={popup} setPopup={setPopup} />;
       default:
         break;
     }
@@ -50,7 +50,7 @@ function BottomMenu() {
               <li>
                 <button onClick={() => handlePopup(4)}>
                   <img
-                    src="images/header/deposit.svg"
+                    src="/images/header/deposit.svg"
                     alt="deposit"
                     width={30}
                     height={30}
@@ -61,7 +61,7 @@ function BottomMenu() {
               <li>
                 <button onClick={() => handlePopup(4)}>
                   <img
-                    src="images/header/withdraw.svg"
+                    src="/images/header/withdraw.svg"
                     alt="withdraw"
                     width={30}
                     height={30}
@@ -72,7 +72,7 @@ function BottomMenu() {
               <li>
                 <button onClick={() => handlePopup(3, "BTC")}>
                   <img
-                    src="images/navigation/earn.svg"
+                    src="/images/navigation/earn.svg"
                     alt="earn"
                     width={30}
                     height={30}
@@ -83,7 +83,7 @@ function BottomMenu() {
               <li>
                 <button onClick={() => handlePopup(2, "BTC")}>
                   <img
-                    src="images/dashboard/redeem.svg"
+                    src="/images/dashboard/redeem.svg"
                     alt="redeem"
                     width={30}
                     height={30}
@@ -94,7 +94,7 @@ function BottomMenu() {
               <li>
                 <Link to="/convert" onClick={() => setOpen(false)}>
                   <img
-                    src="images/navigation/convert.svg"
+                    src="/images/navigation/convert.svg"
                     alt="convert"
                     width={30}
                     height={30}
@@ -105,7 +105,7 @@ function BottomMenu() {
               <li>
                 <button onClick={() => handlePopup(1, "EBCT")}>
                   <img
-                    src="images/dashboard/stake.svg"
+                    src="/images/dashboard/stake.svg"
                     alt="stake"
                     width={30}
                     height={30}
@@ -128,7 +128,7 @@ function BottomMenu() {
               <li>
                 <Link to="/dashboard">
                   <img
-                    src="images/navigation/dashboard.svg"
+                    src="/images/navigation/dashboard.svg"
                     alt="dashboard"
                     width={20}
                     height={20}
@@ -139,7 +139,7 @@ function BottomMenu() {
               <li>
                 <Link to="/wallet">
                   <img
-                    src="images/navigation/wallet.svg"
+                    src="/images/navigation/wallet.svg"
                     alt="wallet"
                     width={20}
                     height={20}
@@ -155,7 +155,7 @@ function BottomMenu() {
               <li>
                 <Link to="/earn">
                   <img
-                    src="images/navigation/earn.svg"
+                    src="/images/navigation/earn.svg"
                     alt="earn"
                     width={20}
                     height={20}
@@ -166,7 +166,7 @@ function BottomMenu() {
               <li>
                 <Link to="/ebct">
                   <img
-                    src="images/navigation/ebnk.svg"
+                    src="/images/navigation/ebnk.svg"
                     alt="ebct"
                     width={20}
                     height={20}

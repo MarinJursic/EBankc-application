@@ -14,8 +14,18 @@ import RedeemPopup from "../../components/RedeemPopup";
 import EarnPopup from "../../components/EarnPopup";
 import DashboardMobile from "../DashboardMobile";
 
+import { useDispatch, useSelector } from "react-redux";
+import { getPrices } from "../../actions/priceActions";
+
 function Dashboard() {
-  const [visible, setVisible] = useState(false);
+  const dispatch = useDispatch();
+  const isVisible = useSelector((state) => state.config.isVisible);
+  const prices = useSelector((state) => state.price.prices);
+  const user = useSelector((state) => state.auth.user);
+
+  useEffect(() => {
+    dispatch(getPrices());
+  }, []);
 
   const [popup, setPopup] = useState(0);
   const [asset, setAsset] = useState(0);
@@ -80,6 +90,27 @@ function Dashboard() {
       amount: 0.03456,
     },
   ]);
+
+  const calcAssetWalletValue = (asset, turnToString = true) => {
+    const val =
+      Math.round(user.wallet[asset].wallet * prices[asset] * 100) / 100;
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
+
+  const calcAssetDeployedValue = (asset, turnToString = true) => {
+    const val =
+      Math.round(user.wallet[asset].deployed * prices[asset] * 100) / 100;
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
+
+  const calcAssetTotalValue = (asset, turnToString = true) => {
+    const val =
+      calcAssetWalletValue(asset, false) + calcAssetDeployedValue(asset, false);
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
 
   const handleSort = (index) => {
     var keys = Object.keys(filter);
@@ -188,15 +219,15 @@ function Dashboard() {
           <div className="earnings">
             <div className="earnbox">
               <h6>24h earnings</h6>
-              <h4>---</h4>
+              <h4>{isVisible ? "$0.00" : "---"}</h4>
             </div>
             <div className="earnbox">
               <h6>7d earnings</h6>
-              <h4>---</h4>
+              <h4>{isVisible ? "$0.00" : "---"}</h4>
             </div>
             <div className="earnbox">
               <h6>30d earnings</h6>
-              <h4>---</h4>
+              <h4>{isVisible ? "$0.00" : "---"}</h4>
             </div>
           </div>
           <div className="largebox">
@@ -224,9 +255,47 @@ function Dashboard() {
                       <h4>EBCT</h4>
                     </span>
                   </td>
-                  <td>---</td>
-                  <td>---</td>
-                  <td>---</td>
+                  <td>
+                    <div className="column">
+                      <h4>
+                        {isVisible ? `${user.wallet["EBCT"].wallet}` : "---"}
+                      </h4>
+                      <h6>
+                        {isVisible
+                          ? `${"$" + calcAssetWalletValue("EBCT")}`
+                          : "---"}
+                      </h6>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="column">
+                      <h4>
+                        {isVisible ? `${user.wallet["EBCT"].deployed}` : "---"}
+                      </h4>
+                      <h6>
+                        {isVisible
+                          ? `${"$" + calcAssetDeployedValue("EBCT")}`
+                          : "---"}
+                      </h6>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="column">
+                      <h4>
+                        {isVisible
+                          ? `${
+                              user.wallet["EBCT"].wallet +
+                              user.wallet["EBCT"].deployed
+                            }`
+                          : "---"}
+                      </h4>
+                      <h6>
+                        {isVisible
+                          ? `${"$" + calcAssetTotalValue("EBCT")}`
+                          : "---"}
+                      </h6>
+                    </div>
+                  </td>
                   <td>
                     <div className="buttons">
                       <button onClick={() => handlePopup(1, "EBCT")}>
@@ -283,9 +352,51 @@ function Dashboard() {
                         <h4>{asset.name}</h4>
                       </span>
                     </td>
-                    <td>---</td>
-                    <td>---</td>
-                    <td>---</td>
+                    <td>
+                      <div className="column">
+                        <h4>
+                          {isVisible
+                            ? `${user.wallet[asset.name].wallet}`
+                            : "---"}
+                        </h4>
+                        <h6>
+                          {isVisible
+                            ? `${"$" + calcAssetWalletValue(asset.name)}`
+                            : "---"}
+                        </h6>
+                      </div>
+                    </td>
+                    <td>
+                      <div className="column">
+                        <h4>
+                          {isVisible
+                            ? `${user.wallet[asset.name].deployed}`
+                            : "---"}
+                        </h4>
+                        <h6>
+                          {isVisible
+                            ? `${"$" + calcAssetDeployedValue(asset.name)}`
+                            : "---"}
+                        </h6>
+                      </div>
+                    </td>
+                    <td>
+                      <div className="column">
+                        <h4>
+                          {isVisible
+                            ? `${
+                                user.wallet[asset.name].wallet +
+                                user.wallet[asset.name].deployed
+                              }`
+                            : "---"}
+                        </h4>
+                        <h6>
+                          {isVisible
+                            ? `${"$" + calcAssetTotalValue(asset.name)}`
+                            : "---"}
+                        </h6>
+                      </div>
+                    </td>
                     <td>
                       <div className="buttons">
                         <button onClick={() => handlePopup(3, asset.name)}>
@@ -335,7 +446,7 @@ function Dashboard() {
                   <h4>EBCT</h4>
                 </div>
                 <div className="bottom">
-                  <h3>---</h3>
+                  <h3>{isVisible ? "$0.00" : "---"}</h3>
                   <select name="time" id="time" onChange={handleChange}>
                     <option value="7 days">7 days</option>
                     <option value="14 days">14 days</option>
