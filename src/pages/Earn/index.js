@@ -3,10 +3,9 @@ import "./styles.scss";
 import Header from "../../components/Header";
 import { Link } from "react-router-dom";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 function Earn() {
-  const dispatch = useDispatch();
   const isVisible = useSelector((state) => state.config.isVisible);
   const prices = useSelector((state) => state.price.prices);
   const user = useSelector((state) => state.auth.user);
@@ -44,23 +43,27 @@ function Earn() {
     },
   ];
 
-  const calcAssetWalletValue = (asset, turnToString = true) => {
-    const val = user.wallet.assets[asset].wallet * prices[asset];
-
-    return turnToString ? val.toLocaleString("en-US") : val;
-  };
-
   const calcAssetholdingValue = (asset, turnToString = true) => {
     const val = user.wallet.assets[asset].holding * prices[asset];
 
     return turnToString ? val.toLocaleString("en-US") : val;
   };
 
-  const calcAssetTotalValue = (asset, turnToString = true) => {
-    const val =
-      calcAssetWalletValue(asset, false) + calcAssetholdingValue(asset, false);
+  const truncate = (amount) => {
+    let truncated = Math.trunc(amount);
 
-    return turnToString ? val.toLocaleString("en-US") : val;
+    console.log(
+      amount,
+      truncated,
+      parseFloat(amount - truncated),
+      parseFloat(1.00001 - 1)
+    );
+
+    if (parseFloat(amount - truncated) >= parseFloat(0.000001)) {
+      return amount.toFixed(5);
+    } else {
+      return Math.round(amount);
+    }
   };
 
   return (
@@ -78,7 +81,7 @@ function Earn() {
                 <h4 style={{ opacity: "0.5" }}>Holding</h4>
                 <h2>
                   {isVisible
-                    ? `${user.wallet.assets[coin.name].holding}`
+                    ? `${truncate(user.wallet.assets[coin.name].holding)}`
                     : "----"}
                 </h2>
                 <h3 style={{ opacity: "0.5" }}>

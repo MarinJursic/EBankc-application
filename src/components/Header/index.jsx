@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import "./styles.scss";
 import { Link } from "react-router-dom";
@@ -9,6 +11,7 @@ import EarnPopup from "../EarnPopup";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../actions/authActions";
 import { setVisible } from "../../actions/configActions";
+import { useLocation } from "react-router-dom";
 
 function Header({ page }) {
   const dispatch = useDispatch();
@@ -16,14 +19,38 @@ function Header({ page }) {
   const prices = useSelector((state) => state.price.prices);
   const user = useSelector((state) => state.auth.user);
 
+  const location = useLocation();
+
+  const [level, setLevel] = useState(1);
+
   const [menu, setMenu] = useState(false);
 
   const levels = [
-    { name: "Bronze", img: "bronze.svg" },
-    { name: "Silver", img: "silver.svg" },
-    { name: "Gold", img: "gold.svg" },
-    { name: "Diamond", img: "diamond.svg" },
+    { name: "Bronze", img: "bronze.svg", amount: 0 },
+    { name: "Silver", img: "silver.svg", amount: 5000 },
+    { name: "Gold", img: "gold.svg", amount: 10000 },
+    { name: "Diamond", img: "diamond.svg", amount: 20000 },
   ];
+
+  const getLevel = () => {
+    let locked = parseFloat(user.wallet.assets["EBCT"].locked);
+
+    for (let i = 0; i < levels.length; i++) {
+      if (i === 3) {
+        setLevel(i + 1);
+        return;
+      } else {
+        if (locked >= levels[i].amount && locked < levels[i + 1].amount) {
+          setLevel(i + 1);
+          return;
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    getLevel();
+  }, []);
 
   const routeInfo = {
     Dashboard: {
@@ -89,37 +116,6 @@ function Header({ page }) {
       removeBottom: true,
     },
   };
-
-  const notifications = [
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-  ];
 
   const calcAssetWalletValue = (asset, turnToString = true) => {
     const val = user.wallet.assets[asset].wallet * prices[asset];
@@ -230,7 +226,16 @@ function Header({ page }) {
     <header className="mainheader">
       {menu && <MobileMenu />}
       {buttonPopup !== 0 && getButtonPopup()}
-      <div className="mRow">
+      <div
+        className={
+          location.pathname !== "/buy" &&
+          location.pathname !== "/convert" &&
+          location.pathname !== "/transactions" &&
+          location.pathname !== "/settings"
+            ? "mRow"
+            : "mRow without"
+        }
+      >
         <span className="mTitle">
           <img
             src={routeInfo[page].icon}
@@ -242,7 +247,7 @@ function Header({ page }) {
         </span>
         <span className="mInfo">
           <img
-            src={`/images/karma/${levels[user.level - 1].img}`}
+            src={`/images/karma/${levels[level - 1].img}`}
             alt="level"
             width={25}
             height={25}
@@ -268,7 +273,7 @@ function Header({ page }) {
             />
             <div className="notificationdropdown">
               <h3>Notifications - 0 New</h3>
-              {notifications.map((each) => (
+              {user.notifications.map((each) => (
                 <span>
                   <h4>{each.action}</h4>
                   <h6>{each.time}</h6>
@@ -281,7 +286,7 @@ function Header({ page }) {
             >
               <div className="mColumn">
                 <h3>EBankc App User</h3>
-                <h4>{levels[user.level - 1].name} Tier</h4>
+                <h4>{levels[level - 1].name} Tier</h4>
               </div>
               {!dropdown ? (
                 <img

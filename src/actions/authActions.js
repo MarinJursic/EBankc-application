@@ -1,20 +1,159 @@
 import {
   USER_LOADING,
-  USER_LOADED,
-  AUTH_ERROR,
   LOGIN_SUCCESS,
-  LOGIN_FAIL,
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
-  REGISTER_FAIL,
   UPDATE_USER,
   UPDATE_WALLET,
 } from "./types";
 
-import { returnErrors } from "./errorActions";
+const notifications = [
+  {
+    action: "Logout",
+    time: "2 days ago",
+  },
+  {
+    action: "Logout",
+    time: "2 days ago",
+  },
+  {
+    action: "Logout",
+    time: "2 days ago",
+  },
+  {
+    action: "Logout",
+    time: "2 days ago",
+  },
+  {
+    action: "Logout",
+    time: "2 days ago",
+  },
+  {
+    action: "Logout",
+    time: "2 days ago",
+  },
+  {
+    action: "Logout",
+    time: "2 days ago",
+  },
+];
+
+const settings = {
+  language: 0,
+  currency: 0,
+  logout: 2,
+  withdraw: 3,
+};
+
+const activeData = [
+  {
+    loggedIn: "50 minutes ago",
+    browser: "Chrome",
+    os: "Windows",
+    ip: "192.168.10.0",
+    location: "USA",
+    isp: "Verizon",
+    current: "true",
+  },
+];
+
+const recentData = [
+  {
+    action: "Disable 2FA",
+    browser: "Chrome",
+    os: "Windows",
+    ip: "192.168.10.0",
+    location: "USA",
+    isp: "Verizon",
+    date: "40 minutes ago",
+  },
+  {
+    action: "Activate 2FA",
+    browser: "Chrome",
+    os: "Windows",
+    ip: "192.168.10.0",
+    location: "USA",
+    isp: "Verizon",
+    date: "45 minutes ago",
+  },
+  {
+    action: "Login",
+    browser: "Chrome",
+    os: "Windows",
+    ip: "192.168.10.0",
+    location: "USA",
+    isp: "Verizon",
+    date: "2 hours ago",
+  },
+  {
+    action: "Logout",
+    browser: "Chrome",
+    os: "Windows",
+    ip: "192.168.10.0",
+    location: "USA",
+    isp: "Verizon",
+    date: "5 hours ago",
+  },
+  {
+    action: "Login",
+    browser: "Chrome",
+    os: "Windows",
+    ip: "192.168.10.0",
+    location: "USA",
+    isp: "Verizon",
+    date: "6 hours ago",
+  },
+  {
+    action: "Logout",
+    browser: "Chrome",
+    os: "Windows",
+    ip: "192.168.10.0",
+    location: "USA",
+    isp: "Verizon",
+    date: "8 hours ago",
+  },
+  {
+    action: "Register",
+    browser: "Chrome",
+    os: "Windows",
+    ip: "192.168.10.0",
+    location: "USA",
+    isp: "Verizon",
+    date: "10 hours ago",
+  },
+];
+
+const activity = {
+  active: activeData,
+  recent: recentData,
+};
 
 export const loadUser = () => (dispatch, getState) => {
   dispatch({ type: USER_LOADING });
+};
+
+export const holdAsset = (asset, amount) => (dispatch, getState) => {
+  const wallet = getState().auth.user.wallet;
+
+  wallet.assets[asset].wallet -= amount;
+  wallet.assets[asset].holding += amount;
+
+  dispatch({
+    type: UPDATE_WALLET,
+    payload: wallet,
+  });
+};
+
+export const redeemAsset = (asset, amount) => (dispatch, getState) => {
+  const wallet = getState().auth.user.wallet;
+
+  wallet.assets[asset].wallet += amount;
+  wallet.assets[asset].holding -= amount;
+
+  dispatch({
+    type: UPDATE_WALLET,
+    payload: wallet,
+  });
 };
 
 export const convertAssets =
@@ -47,35 +186,43 @@ export const registerUser =
       },
       assets: {
         EBCT: {
-          wallet: 1928,
-          holding: 967,
+          wallet: 11,
+          holding: 23,
+          locked: 25000,
         },
         BTC: {
-          wallet: 1986,
-          holding: 123456789123,
+          wallet: 1,
+          holding: 2,
         },
         ETH: {
-          wallet: 1312,
-          holding: 123456789123456789,
+          wallet: 24,
+          holding: 0.5,
         },
         BNB: {
-          wallet: 1965,
-          holding: 9999999999999,
+          wallet: 7,
+          holding: 56,
         },
         USDC: {
-          wallet: 1928,
-          holding: 860,
+          wallet: 2050,
+          holding: 100,
         },
         USDT: {
-          wallet: 1950,
-          holding: 870,
+          wallet: 3078,
+          holding: 200,
         },
       },
     };
 
-    const level = 2;
-
-    const user = { name, email, password, country: "USA", wallet, level };
+    const user = {
+      name,
+      email,
+      password,
+      country: "USA",
+      wallet,
+      activity,
+      settings,
+      notifications,
+    };
 
     dispatch({
       type: REGISTER_SUCCESS,
@@ -96,8 +243,9 @@ export const loginUser =
       },
       assets: {
         EBCT: {
-          wallet: 11,
+          wallet: 11.00001,
           holding: 23,
+          locked: 25000,
         },
         BTC: {
           wallet: 1,
@@ -108,8 +256,8 @@ export const loginUser =
           holding: 0.5,
         },
         BNB: {
-          wallet: 7.9,
-          holding: 56.7,
+          wallet: 7,
+          holding: 56,
         },
         USDC: {
           wallet: 2050,
@@ -122,9 +270,16 @@ export const loginUser =
       },
     };
 
-    const level = 2;
-
-    const user = { name, email, password, country: "USA", wallet, level };
+    const user = {
+      name,
+      email,
+      password,
+      country: "USA",
+      wallet,
+      activity,
+      settings,
+      notifications,
+    };
 
     dispatch({
       type: LOGIN_SUCCESS,
@@ -147,4 +302,15 @@ export const logout = () => {
   return {
     type: LOGOUT_SUCCESS,
   };
+};
+
+export const setSettings = (settingsData) => (dispatch, getState) => {
+  let user = getState().auth.user;
+
+  user.settings = settingsData;
+
+  dispatch({
+    type: UPDATE_USER,
+    payload: user,
+  });
 };

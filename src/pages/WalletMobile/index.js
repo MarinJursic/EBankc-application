@@ -6,10 +6,9 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { Link } from "react-router-dom";
 import "./styles.scss";
 import DepositWithdrawPopup from "../../components/DepositWithdrawPopup";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 function WalletMobile() {
-  const dispatch = useDispatch();
   const isVisible = useSelector((state) => state.config.isVisible);
   const prices = useSelector((state) => state.price.prices);
   const user = useSelector((state) => state.auth.user);
@@ -62,6 +61,16 @@ function WalletMobile() {
       icon: "images/dashboard/usdt.svg",
     },
   ];
+
+  const truncate = (amount) => {
+    let truncated = Math.trunc(amount);
+
+    if (parseFloat(amount - truncated) >= parseFloat(0.000001)) {
+      return amount.toFixed(5);
+    } else {
+      return Math.round(amount);
+    }
+  };
 
   const [filter, setFilter] = useState({
     asset: 0,
@@ -170,6 +179,7 @@ function WalletMobile() {
     });
 
     setTransactions((transactions) => [...tempTransactions]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
   const handlePopup = (value, assetPassed) => {
@@ -235,8 +245,8 @@ function WalletMobile() {
                 <h1>
                   {isVisible
                     ? `${
-                        user.wallet.assets["EBCT"].wallet +
-                        user.wallet.assets["EBCT"].holding
+                        truncate(user.wallet.assets["EBCT"].wallet) +
+                        truncate(user.wallet.assets["EBCT"].holding)
                       }`
                     : "---"}
                 </h1>
@@ -269,7 +279,7 @@ function WalletMobile() {
                 <div className="text">
                   <h1>
                     {isVisible
-                      ? `${user.wallet.assets["EBCT"].holding}`
+                      ? `${truncate(user.wallet.assets["EBCT"].holding)}`
                       : "---"}
                   </h1>
                   <h2>
@@ -297,7 +307,9 @@ function WalletMobile() {
               <div className="righttitle">
                 <div className="text">
                   <h1>
-                    {isVisible ? `${user.wallet.assets["EBCT"].wallet}` : "---"}
+                    {isVisible
+                      ? `${truncate(user.wallet.assets["EBCT"].wallet)}`
+                      : "---"}
                   </h1>
                   <h2>
                     {isVisible ? `${"$" + calcAssetWalletValue("EBCT")}` : "--"}
@@ -354,7 +366,7 @@ function WalletMobile() {
                       {isVisible
                         ? `${
                             user.wallet.assets[asset.name].wallet +
-                            user.wallet.assets[asset.name].holding
+                            truncate(user.wallet.assets[asset.name].holding)
                           }`
                         : "---"}
                     </h1>
@@ -394,7 +406,9 @@ function WalletMobile() {
                     <div className="text">
                       <h1>
                         {isVisible
-                          ? `${user.wallet.assets[asset.name].holding}`
+                          ? `${truncate(
+                              user.wallet.assets[asset.name].holding
+                            )}`
                           : "---"}
                       </h1>
                       <h2>

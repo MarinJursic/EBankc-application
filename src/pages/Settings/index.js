@@ -49,8 +49,6 @@ function Transactions() {
     <ActivityLog />,
   ]);
 
-  console.log("OPEN: ", openQuery);
-
   const [open, setOpen] = useState(parseInt(openQuery) || 0);
 
   useEffect(() => {

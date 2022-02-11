@@ -1,16 +1,23 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { Modal } from "@material-ui/core";
 import "./styles.scss";
 import { useState } from "react";
 import { useEffect } from "react";
-import {
-  MdKeyboardArrowDown,
-  MdKeyboardArrowUp,
-  MdSentimentSatisfiedAlt,
-} from "react-icons/md";
+import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+
+import { useDispatch, useSelector } from "react-redux";
+import { redeemAsset } from "../../actions/authActions";
 
 export default function RedeemPopup({ popup, setPopup, asset }) {
+  const user = useSelector((state) => state.auth.user);
+
+  const dispatch = useDispatch();
+
   const [amount, setAmount] = useState(0);
+
+  const [error, setError] = useState(null);
 
   const [active, setActive] = useState(0);
 
@@ -44,6 +51,11 @@ export default function RedeemPopup({ popup, setPopup, asset }) {
       full: "Tether",
       icon: "/images/dashboard/usdt.svg",
     },
+    {
+      name: "EBCT",
+      full: "EBankc Coin",
+      icon: "/images/dashboard/ebct.svg",
+    },
   ];
 
   const handleClose = () => {
@@ -55,26 +67,34 @@ export default function RedeemPopup({ popup, setPopup, asset }) {
   };
 
   const handleCheck = () => {
-    if (amount < 0.0001) {
-      setAmount(0.0001);
-    } else if (amount > 10000) {
+    if (amount > 10000) {
       setAmount(10000);
     }
   };
 
   const handlePercentage = (index) => {
-    let newAmount = parseFloat(amount * btnPercentages[index - 1]);
-    newAmount = newAmount + parseFloat(amount);
+    let available = user.wallet.assets[asset].holding;
+
+    let newAmount = parseFloat(available * btnPercentages[index - 1]);
 
     if (newAmount > 10000) {
       newAmount = 10000;
     }
 
-    setAmount((amount) => parseFloat(newAmount).toFixed(4));
+    setAmount((amount) => parseFloat(newAmount));
   };
 
   const handleSubmit = () => {
-    console.log("Delegated: " + amount);
+    let available = user.wallet.assets[asset].holding;
+
+    if (amount > available) {
+      setError("Not enough funds.");
+      return null;
+    }
+
+    setError(null);
+    dispatch(redeemAsset(asset, parseFloat(amount)));
+    setAmount(0);
   };
 
   const handleActive = (ind) => {
@@ -212,7 +232,7 @@ export default function RedeemPopup({ popup, setPopup, asset }) {
             </span>
             <span className="available">
               <h3>Available</h3>
-              <h2>0</h2>
+              <h2>{user.wallet.assets[asset].holding}</h2>
               <h4>Next rewards in 1 days at 00:00 UTC</h4>
             </span>
             <span className="amount">

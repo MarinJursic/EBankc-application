@@ -5,13 +5,10 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { styled } from "@mui/material/styles";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
 
-import { useDispatch, useSelector } from "react-redux";
+import Switch from "@mui/material/Switch";
+
+import { useSelector } from "react-redux";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
@@ -58,29 +55,25 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 function EarnToken() {
-  const dispatch = useDispatch();
   const isVisible = useSelector((state) => state.config.isVisible);
   const prices = useSelector((state) => state.price.prices);
   const user = useSelector((state) => state.auth.user);
+  const transactionsData = useSelector(
+    (state) => state.transaction.transactions
+  );
+
+  useEffect(() => {
+    setTransactions(transactionsData);
+  }, [transactionsData]);
+
+  const [transactions, setTransactions] = useState(transactionsData);
+
   const { token } = useParams();
 
   const tokenName = token.toUpperCase();
 
-  const calcAssetWalletValue = (asset, turnToString = true) => {
-    const val = user.wallet.assets[asset].wallet * prices[asset];
-
-    return turnToString ? val.toLocaleString("en-US") : val;
-  };
-
   const calcAssetholdingValue = (asset, turnToString = true) => {
     const val = user.wallet.assets[asset].holding * prices[asset];
-
-    return turnToString ? val.toLocaleString("en-US") : val;
-  };
-
-  const calcAssetTotalValue = (asset, turnToString = true) => {
-    const val =
-      calcAssetWalletValue(asset, false) + calcAssetholdingValue(asset, false);
 
     return turnToString ? val.toLocaleString("en-US") : val;
   };
@@ -171,30 +164,6 @@ function EarnToken() {
     amount: 0,
   });
 
-  const [transactions, setTransactions] = useState([
-    {
-      asset: "BTC",
-      type: "deposit",
-      status: "Success",
-      time: new Date("2019-06-29"),
-      amount: 1.52662,
-    },
-    {
-      asset: "ETH",
-      type: "deposit",
-      status: "Fail",
-      time: new Date("2019-06-18"),
-      amount: 0.012356,
-    },
-    {
-      asset: "EBCT",
-      type: "deposit",
-      status: "Success",
-      time: new Date("2019-06-28"),
-      amount: 0.03456,
-    },
-  ]);
-
   const handleSort = (index) => {
     var keys = Object.keys(filter);
     const trueIndex = index - 1;
@@ -270,6 +239,7 @@ function EarnToken() {
     });
 
     setTransactions((transactions) => [...tempTransactions]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
   return (

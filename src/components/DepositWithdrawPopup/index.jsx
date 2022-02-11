@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Modal } from "@material-ui/core";
 import "./styles.scss";
 import KycPopup from "../KycPopup";
@@ -19,16 +19,12 @@ export default function DepositPopup({ popup, setPopup, type }) {
   };
 
   const handleCheck = () => {
-    if (amount < 0.0001) {
-      setAmount(0.0001);
-    } else if (amount > 10000) {
+    if (amount > 10000) {
       setAmount(10000);
     }
   };
 
-  const handleSubmit = () => {
-    console.log("Delegated: " + amount);
-  };
+  const handleSubmit = () => {};
 
   const networks = [
     {

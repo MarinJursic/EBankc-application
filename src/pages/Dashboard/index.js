@@ -14,13 +14,21 @@ import RedeemPopup from "../../components/RedeemPopup";
 import EarnPopup from "../../components/EarnPopup";
 import DashboardMobile from "../DashboardMobile";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 function Dashboard() {
-  const dispatch = useDispatch();
   const isVisible = useSelector((state) => state.config.isVisible);
   const prices = useSelector((state) => state.price.prices);
   const user = useSelector((state) => state.auth.user);
+  const transactionsData = useSelector(
+    (state) => state.transaction.transactions
+  );
+
+  useEffect(() => {
+    setTransactions(transactionsData);
+  }, [transactionsData]);
+
+  const [transactions, setTransactions] = useState(transactionsData);
 
   const [popup, setPopup] = useState(0);
   const [asset, setAsset] = useState(0);
@@ -35,24 +43,39 @@ function Dashboard() {
     {
       name: "BTC",
       icon: "images/dashboard/bitcoin.svg",
+      decimals: 6,
     },
     {
       name: "ETH",
       icon: "images/dashboard/ethereum.svg",
+      decimals: 4,
     },
     {
       name: "BNB",
       icon: "images/dashboard/bnb.svg",
+      decimals: 4,
     },
     {
       name: "USDC",
       icon: "images/dashboard/usdc.svg",
+      decimals: 2,
     },
     {
       name: "USDT",
       icon: "images/dashboard/usdt.svg",
+      decimals: 2,
     },
   ];
+
+  const truncate = (amount) => {
+    let truncated = Math.trunc(amount);
+
+    if (parseFloat(amount - truncated) >= parseFloat(0.000001)) {
+      return amount.toFixed(5);
+    } else {
+      return Math.round(amount);
+    }
+  };
 
   const [filter, setFilter] = useState({
     asset: 0,
@@ -61,30 +84,6 @@ function Dashboard() {
     time: 0,
     amount: 0,
   });
-
-  const [transactions, setTransactions] = useState([
-    {
-      asset: "BTC",
-      type: "deposit",
-      status: "Success",
-      time: new Date("2019-06-29"),
-      amount: 1.52662,
-    },
-    {
-      asset: "ETH",
-      type: "deposit",
-      status: "Fail",
-      time: new Date("2019-06-18"),
-      amount: 0.012356,
-    },
-    {
-      asset: "EBCT",
-      type: "deposit",
-      status: "Success",
-      time: new Date("2019-06-28"),
-      amount: 0.03456,
-    },
-  ]);
 
   const calcAssetWalletValue = (asset, turnToString = true) => {
     const val = user.wallet.assets[asset].wallet * prices[asset];
@@ -258,7 +257,7 @@ function Dashboard() {
                     <div className="column">
                       <h4>
                         {isVisible
-                          ? `${user.wallet.assets["EBCT"].wallet}`
+                          ? `${truncate(user.wallet.assets["EBCT"].wallet)}`
                           : "---"}
                       </h4>
                       <h6>
@@ -272,7 +271,7 @@ function Dashboard() {
                     <div className="column">
                       <h4>
                         {isVisible
-                          ? `${user.wallet.assets["EBCT"].holding}`
+                          ? `${truncate(user.wallet.assets["EBCT"].holding)}`
                           : "---"}
                       </h4>
                       <h6>
@@ -286,10 +285,10 @@ function Dashboard() {
                     <div className="column">
                       <h4>
                         {isVisible
-                          ? `${
+                          ? `${truncate(
                               user.wallet.assets["EBCT"].wallet +
-                              user.wallet.assets["EBCT"].holding
-                            }`
+                                user.wallet.assets["EBCT"].holding
+                            )}`
                           : "---"}
                       </h4>
                       <h6>
@@ -312,7 +311,7 @@ function Dashboard() {
                           Hold
                         </span>
                       </button>
-                      <button onClick={() => handlePopup(2, "BTC")}>
+                      <button onClick={() => handlePopup(2, "EBCT")}>
                         <span>
                           <img
                             src="images/dashboard/lock.svg"
@@ -359,7 +358,9 @@ function Dashboard() {
                       <div className="column">
                         <h4>
                           {isVisible
-                            ? `${user.wallet.assets[asset.name].wallet}`
+                            ? `${truncate(
+                                user.wallet.assets[asset.name].wallet
+                              )}`
                             : "---"}
                         </h4>
                         <h6>
@@ -373,7 +374,9 @@ function Dashboard() {
                       <div className="column">
                         <h4>
                           {isVisible
-                            ? `${user.wallet.assets[asset.name].holding}`
+                            ? `${truncate(
+                                user.wallet.assets[asset.name].holding
+                              )}`
                             : "---"}
                         </h4>
                         <h6>
@@ -387,10 +390,10 @@ function Dashboard() {
                       <div className="column">
                         <h4>
                           {isVisible
-                            ? `${
+                            ? `${truncate(
                                 user.wallet.assets[asset.name].wallet +
-                                user.wallet.assets[asset.name].holding
-                              }`
+                                  user.wallet.assets[asset.name].holding
+                              )}`
                             : "---"}
                         </h4>
                         <h6>

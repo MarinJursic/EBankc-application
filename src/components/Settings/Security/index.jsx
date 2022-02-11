@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef } from "react";
 import "./styles.scss";
 
@@ -375,7 +376,6 @@ function Security() {
 
   useEffect(() => {
     if (twoFactorEnabled !== twoFactorEnabledState) {
-      console.log("2fa: ", twoFactorEnabled);
       enable2FA();
     }
   }, [twoFactorEnabled]);

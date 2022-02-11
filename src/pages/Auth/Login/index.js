@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import React, { useState, useEffect } from "react";
 import "../styles.scss";
 
@@ -10,8 +11,6 @@ import Alert from "../../../components/Alert";
 import Input from "../Input";
 
 function Login() {
-  const [isVisible, setIsVisible] = useState(false);
-
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
 
@@ -53,7 +52,10 @@ function Login() {
     <main className="login">
       {checkTwoFactor && <TwoFactorAuth user={user} />}
 
-      <section className="box">
+      <section
+        className="box"
+        style={checkTwoFactor ? { display: "none" } : null}
+      >
         <h2>LOG IN</h2>
         <p>Log in with your credentials</p>
         <Input
@@ -89,7 +91,9 @@ function Login() {
           </p>
         </div>
       </section>
-      <p>{"©"} 2022. All rights reserved.</p>
+      <p style={checkTwoFactor ? { display: "none" } : null}>
+        {"©"} 2022. All rights reserved.
+      </p>
     </main>
   );
 }

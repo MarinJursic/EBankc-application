@@ -10,7 +10,7 @@ import { styled } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import { Link } from "react-router-dom";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
@@ -57,21 +57,62 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 function EBCT() {
-  const dispatch = useDispatch();
   const isVisible = useSelector((state) => state.config.isVisible);
   const user = useSelector((state) => state.auth.user);
   const prices = useSelector((state) => state.price.prices);
+  const transactionsData = useSelector(
+    (state) => state.transaction.transactions
+  );
+
+  const [level, setLevel] = useState(1);
+
+  const levels = [
+    { name: "Bronze", img: "bronze.svg", amount: 0 },
+    { name: "Silver", img: "silver.svg", amount: 5000 },
+    { name: "Gold", img: "gold.svg", amount: 10000 },
+    { name: "Diamond", img: "diamond.svg", amount: 20000 },
+  ];
+
+  const getLevel = () => {
+    let locked = parseFloat(user.wallet.assets["EBCT"].locked);
+
+    for (let i = 0; i < levels.length; i++) {
+      if (i === 3) {
+        setLevel(i + 1);
+        return;
+      } else {
+        if (locked >= levels[i].amount && locked < levels[i + 1].amount) {
+          setLevel(i + 1);
+          return;
+        }
+      }
+    }
+  };
+
+  const truncate = (amount) => {
+    let truncated = Math.trunc(amount);
+
+    if (parseFloat(amount - truncated) >= parseFloat(0.000001)) {
+      return amount.toFixed(5);
+    } else {
+      return Math.round(amount);
+    }
+  };
+
+  useEffect(() => {
+    getLevel();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    setTransactions(transactionsData);
+  }, [transactionsData]);
+
+  const [transactions, setTransactions] = useState(transactionsData);
 
   const [time, setTime] = useState("7 days");
   const [asset, setAsset] = useState();
   const [popup, setPopup] = useState(0);
-
-  const levels = [
-    { name: "Bronze", img: "bronze.svg" },
-    { name: "Silver", img: "silver.svg" },
-    { name: "Gold", img: "gold.svg" },
-    { name: "Diamond", img: "diamond.svg" },
-  ];
 
   const handleChange = (event) => {
     setTime(event.target.value);
@@ -104,30 +145,6 @@ function EBCT() {
     time: 0,
     amount: 0,
   });
-
-  const [transactions, setTransactions] = useState([
-    {
-      asset: "BTC",
-      type: "deposit",
-      status: "Success",
-      time: new Date("2019-06-29"),
-      amount: 1.52662,
-    },
-    {
-      asset: "ETH",
-      type: "deposit",
-      status: "Fail",
-      time: new Date("2019-06-18"),
-      amount: 0.012356,
-    },
-    {
-      asset: "EBCT",
-      type: "deposit",
-      status: "Success",
-      time: new Date("2019-06-28"),
-      amount: 0.03456,
-    },
-  ]);
 
   const handleSort = (index) => {
     var keys = Object.keys(filter);
@@ -204,6 +221,7 @@ function EBCT() {
     });
 
     setTransactions((transactions) => [...tempTransactions]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
   const calcAssetWalletValue = (asset, turnToString = true) => {
@@ -214,13 +232,6 @@ function EBCT() {
 
   const calcAssetholdingValue = (asset, turnToString = true) => {
     const val = user.wallet.assets[asset].holding * prices[asset];
-
-    return turnToString ? val.toLocaleString("en-US") : val;
-  };
-
-  const calcAssetTotalValue = (asset, turnToString = true) => {
-    const val =
-      calcAssetWalletValue(asset, false) + calcAssetholdingValue(asset, false);
 
     return turnToString ? val.toLocaleString("en-US") : val;
   };
@@ -308,7 +319,7 @@ function EBCT() {
                   <div className="text">
                     <h1>
                       {isVisible
-                        ? `${user.wallet.assets["EBCT"].holding}`
+                        ? `${truncate(user.wallet.assets["EBCT"].holding)}`
                         : "---"}
                     </h1>
                     <h2>
@@ -334,7 +345,7 @@ function EBCT() {
                   <div className="text">
                     <h1>
                       {isVisible
-                        ? `${user.wallet.assets["EBCT"].wallet}`
+                        ? `${truncate(user.wallet.assets["EBCT"].wallet)}`
                         : "---"}
                     </h1>
                     <h2>
@@ -358,7 +369,7 @@ function EBCT() {
                       Hold
                     </span>
                   </button>
-                  <button onClick={() => handlePopup(2, "BTC")}>
+                  <button onClick={() => handlePopup(2, "EBCT")}>
                     <span>
                       <img
                         src="images/dashboard/lock.svg"
@@ -413,7 +424,7 @@ function EBCT() {
                       <h4>
                         {" "}
                         {isVisible
-                          ? `${user.wallet.assets["EBCT"].holding}`
+                          ? `${truncate(user.wallet.assets["EBCT"].holding)}`
                           : "---"}
                       </h4>
                       <h6>
@@ -428,7 +439,7 @@ function EBCT() {
                     <div className="column">
                       <h4>
                         {isVisible
-                          ? `${user.wallet.assets["EBCT"].wallet}`
+                          ? `${truncate(user.wallet.assets["EBCT"].wallet)}`
                           : "---"}
                       </h4>
                       <h6>
@@ -451,7 +462,7 @@ function EBCT() {
                           Hold
                         </span>
                       </button>
-                      <button onClick={() => handlePopup(2, "BTC")}>
+                      <button onClick={() => handlePopup(2, "EBCT")}>
                         <span>
                           <img
                             src="images/dashboard/lock.svg"
@@ -486,25 +497,47 @@ function EBCT() {
               <div className="earnbox">
                 <span>
                   <img
-                    src={`/images/karma/${levels[user.level - 1].img}`}
+                    src={`/images/karma/${levels[level - 1].img}`}
                     alt="bronze"
                     width={25}
                     height={25}
                   />
-                  <strong>{levels[user.level - 1].name}</strong>
+                  <strong>{levels[level - 1].name}</strong>
                   tier
                 </span>
                 <div className="linegraph">
-                  <h5>{isVisible ? "0" : "---"}</h5>
+                  <h5>
+                    {isVisible ? user.wallet.assets["EBCT"].locked : "---"}
+                  </h5>
                   <div className="containergraph">
-                    <div className="reached"></div>
+                    <div
+                      className="reached"
+                      style={{
+                        width: `${
+                          (user.wallet.assets["EBCT"].locked /
+                            levels[level - (level === 4 ? 1 : 0)].amount) *
+                          100
+                        }%`,
+                      }}
+                    ></div>
                   </div>
-                  <h5 className="destination">5,000 EBCT</h5>
+                  <h5 className="destination">
+                    {levels[level - (level === 4 ? 1 : 0)].amount} EBCT
+                  </h5>
                 </div>
-                <p>
-                  Stake or lock {isVisible ? "5,000" : "-"} more EBCT to react
-                  Level {user.level + 1}.
-                </p>
+                {!(
+                  user.wallet.assets["EBCT"].locked >=
+                  levels[levels.length - 1].amount
+                ) && (
+                  <p>
+                    Stake or lock{" "}
+                    {isVisible
+                      ? levels[level - (level === 4 ? 1 : 0)].amount -
+                        user.wallet.assets["EBCT"].locked
+                      : "-"}{" "}
+                    more EBCT to react Level {level + 1}.
+                  </p>
+                )}
               </div>
             </div>
             <div className="largebox">

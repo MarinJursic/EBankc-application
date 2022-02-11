@@ -9,13 +9,21 @@ import RedeemPopup from "../../components/RedeemPopup";
 import EarnPopup from "../../components/EarnPopup";
 import DepositWithdrawPopup from "../../components/DepositWithdrawPopup";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 function Wallet() {
-  const dispatch = useDispatch();
   const isVisible = useSelector((state) => state.config.isVisible);
   const prices = useSelector((state) => state.price.prices);
   const user = useSelector((state) => state.auth.user);
+  const transactionsData = useSelector(
+    (state) => state.transaction.transactions
+  );
+
+  useEffect(() => {
+    setTransactions(transactionsData);
+  }, [transactionsData]);
+
+  const [transactions, setTransactions] = useState(transactionsData);
 
   const calcAssetWalletValue = (asset, turnToString = true) => {
     const val =
@@ -31,21 +39,8 @@ function Wallet() {
     return turnToString ? val.toLocaleString("en-US") : val;
   };
 
-  const calcAssetTotalValue = (asset, turnToString = true) => {
-    const val =
-      calcAssetWalletValue(asset, false) + calcAssetholdingValue(asset, false);
-
-    return turnToString ? val.toLocaleString("en-US") : val;
-  };
-
   const [popup, setPopup] = useState(0);
   const [asset, setAsset] = useState(0);
-
-  const [time, setTime] = React.useState("7 days");
-
-  const handleChange = (event) => {
-    setTime(event.target.value);
-  };
 
   const assets = [
     {
@@ -70,6 +65,16 @@ function Wallet() {
     },
   ];
 
+  const truncate = (amount) => {
+    let truncated = Math.trunc(amount);
+
+    if (parseFloat(amount - truncated) >= parseFloat(0.000001)) {
+      return amount.toFixed(5);
+    } else {
+      return Math.round(amount);
+    }
+  };
+
   const [filter, setFilter] = useState({
     asset: 0,
     type: 0,
@@ -77,30 +82,6 @@ function Wallet() {
     time: 0,
     amount: 0,
   });
-
-  const [transactions, setTransactions] = useState([
-    {
-      asset: "BTC",
-      type: "deposit",
-      status: "Success",
-      time: new Date("2019-06-29"),
-      amount: 1.52662,
-    },
-    {
-      asset: "ETH",
-      type: "deposit",
-      status: "Fail",
-      time: new Date("2019-06-18"),
-      amount: 0.012356,
-    },
-    {
-      asset: "EBCT",
-      type: "deposit",
-      status: "Success",
-      time: new Date("2019-06-28"),
-      amount: 0.03456,
-    },
-  ]);
 
   const handleSort = (index) => {
     var keys = Object.keys(filter);
@@ -177,6 +158,7 @@ function Wallet() {
     });
 
     setTransactions((transactions) => [...tempTransactions]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
   const handlePopup = (value, assetPassed) => {
@@ -247,7 +229,7 @@ function Wallet() {
                     <div className="column">
                       <h4>
                         {isVisible
-                          ? `${user.wallet.assets["EBCT"].wallet}`
+                          ? `${truncate(user.wallet.assets["EBCT"].wallet)}`
                           : "---"}
                       </h4>
                       <h6>
@@ -261,7 +243,7 @@ function Wallet() {
                     <div className="column">
                       <h4>
                         {isVisible
-                          ? `${user.wallet.assets["EBCT"].holding}`
+                          ? `${truncate(user.wallet.assets["EBCT"].holding)}`
                           : "---"}
                       </h4>
                       <h6>
@@ -284,7 +266,7 @@ function Wallet() {
                           Hold
                         </span>
                       </button>
-                      <button onClick={() => handlePopup(2, "BTC")}>
+                      <button onClick={() => handlePopup(2, "EBCT")}>
                         <span>
                           <img
                             src="images/dashboard/lock.svg"
@@ -330,7 +312,9 @@ function Wallet() {
                       <div className="column">
                         <h4>
                           {isVisible
-                            ? `${user.wallet.assets[asset.name].wallet}`
+                            ? `${truncate(
+                                user.wallet.assets[asset.name].wallet
+                              )}`
                             : "---"}
                         </h4>
                         <h6>
@@ -344,7 +328,9 @@ function Wallet() {
                       <div className="column">
                         <h4>
                           {isVisible
-                            ? `${user.wallet.assets[asset.name].holding}`
+                            ? `${truncate(
+                                user.wallet.assets[asset.name].holding
+                              )}`
                             : "---"}
                         </h4>
                         <h6>

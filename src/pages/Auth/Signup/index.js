@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-useless-escape */
 import React, { useState, useEffect } from "react";
 import "../styles.scss";
 
@@ -13,8 +15,6 @@ import Input from "../Input";
 function Signup() {
   const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
-
-  const [isVisible, setIsVisible] = useState(false);
 
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
@@ -44,7 +44,7 @@ function Signup() {
 
     setEmailError(!emailValid ? "Invalid Email Address" : null);
 
-    return passwordValid && emailValid;
+    return passwordValid && emailValid && confirmPasswordValid;
   };
 
   const handleSignup = () => {

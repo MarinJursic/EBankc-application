@@ -54,6 +54,11 @@ function Convert() {
       full: "Tether",
       icon: "images/dashboard/usdt.svg",
     },
+    {
+      name: "EBCT",
+      full: "EBankc Coin",
+      icon: "images/dashboard/ebct.svg",
+    },
   ];
 
   const priceOf = (asset) => {

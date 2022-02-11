@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState } from "react";
 import "./styles.scss";
 
@@ -6,6 +7,8 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { motion } from "framer-motion";
 
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { setSettings } from "../../../actions/authActions";
 
 function Dropdown({ open, setOpen, data, active, setActive }) {
   const dropdownVariants = {
@@ -49,7 +52,6 @@ function Dropdown({ open, setOpen, data, active, setActive }) {
 
 function Account() {
   const dispatch = useDispatch();
-
   const user = useSelector((state) => state.auth.user);
 
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
@@ -57,10 +59,10 @@ function Account() {
   const [logoutDropdownOpen, setLogoutDropdownOpen] = useState(false);
   const [withdrawDropdownOpen, setWithdrawDropdownOpen] = useState(false);
 
-  const [activeLanguage, setActiveLanguage] = useState(0);
-  const [activeCurrency, setActiveCurrency] = useState(0);
-  const [activeLogout, setActiveLogout] = useState(0);
-  const [activeWithdraw, setActiveWithdraw] = useState(0);
+  const [activeLanguage, setActiveLanguage] = useState(user.settings.language);
+  const [activeCurrency, setActiveCurrency] = useState(user.settings.currency);
+  const [activeLogout, setActiveLogout] = useState(user.settings.logout);
+  const [activeWithdraw, setActiveWithdraw] = useState(user.settings.withdraw);
 
   const [languageData] = useState(["English"]);
   const [currencyData] = useState(["USD", "EUR"]);
@@ -72,6 +74,25 @@ function Account() {
     "in 60 minutes",
   ]);
   const [withdrawData] = useState([0, 1, 2, 3]);
+
+  useEffect(() => {
+    setActiveLanguage((activeLanguage) => user.settings.language);
+    setActiveCurrency((activeCurrency) => user.settings.currency);
+    setActiveLogout((activeLogout) => user.settings.logout);
+    setActiveWithdraw((activeWithdraw) => user.settings.withdraw);
+  }, []);
+
+  useEffect(() => {
+    const settingsData = {
+      language: activeLanguage,
+      currency: activeCurrency,
+      logout: activeLogout,
+      withdraw: activeWithdraw,
+    };
+    dispatch(setSettings(settingsData));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeLanguage, activeCurrency, activeLogout, activeWithdraw]);
 
   return (
     <main className="account">

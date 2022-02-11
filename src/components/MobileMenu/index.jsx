@@ -3,71 +3,14 @@ import { useState } from "react";
 import "./styles.scss";
 import { Link } from "react-router-dom";
 
-function MobileMenu() {
-  const [active, setActive] = useState(1);
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../actions/authActions";
 
-  const notifications = [
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-    {
-      action: "Logout",
-      time: "2 days ago",
-    },
-  ];
+function MobileMenu() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+
+  const [active, setActive] = useState(1);
 
   return (
     <div className="mobileMenu">
@@ -220,7 +163,7 @@ function MobileMenu() {
               </a>
             </li>
             <li>
-              <button onClick={() => console.log("logout")}>
+              <button onClick={() => dispatch(logout())}>
                 <span>
                   <img
                     src="/images/header/logout.svg"
@@ -237,7 +180,7 @@ function MobileMenu() {
         </nav>
       ) : (
         <div className="notif">
-          {notifications.map((n, index) => (
+          {user.notifications.map((n, index) => (
             <div className="notificationObject">
               <h2>{n.action}</h2>
               <h3>{n.time}</h3>

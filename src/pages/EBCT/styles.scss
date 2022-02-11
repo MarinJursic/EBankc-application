@@ -65,7 +65,6 @@
                   border-radius: 15px;
                   background-color: green;
                   box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
-                  width: 10%;
                   height: 100%;
                 }
               }
@@ -986,7 +985,7 @@
 
 @media only screen and (max-width: 750px) {
   .EBCT {
-    padding: 0;
+    padding: 0 !important;
 
     .desktop {
       padding: 1rem;
@@ -1047,5 +1046,11 @@
         margin-bottom: 0.5rem !important;
       }
     }
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .EBCT .desktop .below .rightside .recentactivity table td {
+    font-size: 0.75em !important;
   }
 }

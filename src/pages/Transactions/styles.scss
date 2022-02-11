@@ -242,6 +242,15 @@
       table {
         width: 100%;
         border-spacing: 0;
+        position: relative;
+
+        .notransactions {
+          position: absolute;
+          left: 50%;
+          top: 200%;
+          transform: translateX(-50%);
+          font-size: 1.2rem;
+        }
 
         th {
           padding: 0.4rem;
@@ -355,7 +364,7 @@
   }
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1000px) {
   .transactions {
     width: 100%;
   }

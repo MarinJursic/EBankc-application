@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import "./styles.scss";
 import Header from "../../components/Header";
 
+import { useSelector } from "react-redux";
+
 import SmallNavigation from "../../components/SmallNavigation";
 import Select from "../../components/Select";
 
@@ -85,7 +87,15 @@ function SmallDropdown({ title, values, open, setOpen, active, setActive }) {
 }
 
 function RecentActivity({ link }) {
-  const [time, setTime] = React.useState("7 days");
+  const transactionsData = useSelector(
+    (state) => state.transaction.transactions
+  );
+
+  useEffect(() => {
+    setTransactions(transactionsData);
+  }, [transactionsData]);
+
+  const [transactions, setTransactions] = useState(transactionsData);
 
   const [forceUp, setForceUp] = useState(0);
 
@@ -115,8 +125,6 @@ function RecentActivity({ link }) {
 
     tempDate.setHours(0, 0, 0, 0);
 
-    console.log(tempDate);
-
     setThreeDotsOpen(false);
 
     setDate(tempDate);
@@ -141,33 +149,6 @@ function RecentActivity({ link }) {
     time: 0,
     amount: 0,
   });
-
-  const [transactions, setTransactions] = useState([
-    {
-      asset: "BTC",
-      type: "Deposit",
-      status: "Completed",
-      id: 0,
-      time: new Date(),
-      amount: 1.52662,
-    },
-    {
-      asset: "ETH",
-      type: "Deposit",
-      status: "Failed",
-      id: 1,
-      time: new Date(),
-      amount: 0.012356,
-    },
-    {
-      asset: "EBCT",
-      type: "Deposit",
-      status: "Completed",
-      id: 2,
-      time: new Date(),
-      amount: 0.03456,
-    },
-  ]);
 
   const handleSort = (index) => {
     var keys = Object.keys(filter);
@@ -243,7 +224,8 @@ function RecentActivity({ link }) {
       });
     });
 
-    setTransactions((transactions) => [...tempTransactions]);
+    setTransactions(tempTransactions);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
   const [filterOpen, setFilterOpen] = useState(false);
@@ -406,8 +388,6 @@ function RecentActivity({ link }) {
       data.push(transactionArray);
     }
 
-    console.log(data.length);
-
     setCsvFilename(generateCsvFilename());
 
     setCsvData(data);
@@ -415,6 +395,7 @@ function RecentActivity({ link }) {
 
   useEffect(() => {
     generateCSVdata();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [threeDotsOpen]);
 
   const dotsVariants = {
@@ -543,11 +524,7 @@ function RecentActivity({ link }) {
         </thead>
         <tbody>
           {transactions.length === 0 ? (
-            <tr>
-              <td colSpan={5} className="notransactions">
-                No Transactions Yet
-              </td>
-            </tr>
+            <h5 className="notransactions">No transactions yet</h5>
           ) : (
             <>
               {transactions

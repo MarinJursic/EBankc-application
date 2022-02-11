@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import "./styles.scss";
 
 function RecentActivity({ data, labels, title, flipVertical = false }) {
@@ -42,17 +43,7 @@ function RecentActivity({ data, labels, title, flipVertical = false }) {
 }
 
 function ActivityLog() {
-  const activeData = [
-    {
-      loggedIn: "50 minutes ago",
-      browser: "Chrome",
-      os: "Windows",
-      ip: "192.168.10.0",
-      location: "USA",
-      isp: "Verizon",
-      current: "true",
-    },
-  ];
+  const user = useSelector((state) => state.auth.user);
 
   const activeLabels = [
     "Logged in",
@@ -62,72 +53,6 @@ function ActivityLog() {
     "Location",
     "ISP",
     "Current",
-  ];
-
-  const recentData = [
-    {
-      action: "Disable 2FA",
-      browser: "Chrome",
-      os: "Windows",
-      ip: "192.168.10.0",
-      location: "USA",
-      isp: "Verizon",
-      date: "40 minutes ago",
-    },
-    {
-      action: "Activate 2FA",
-      browser: "Chrome",
-      os: "Windows",
-      ip: "192.168.10.0",
-      location: "USA",
-      isp: "Verizon",
-      date: "45 minutes ago",
-    },
-    {
-      action: "Login",
-      browser: "Chrome",
-      os: "Windows",
-      ip: "192.168.10.0",
-      location: "USA",
-      isp: "Verizon",
-      date: "2 hours ago",
-    },
-    {
-      action: "Logout",
-      browser: "Chrome",
-      os: "Windows",
-      ip: "192.168.10.0",
-      location: "USA",
-      isp: "Verizon",
-      date: "5 hours ago",
-    },
-    {
-      action: "Login",
-      browser: "Chrome",
-      os: "Windows",
-      ip: "192.168.10.0",
-      location: "USA",
-      isp: "Verizon",
-      date: "6 hours ago",
-    },
-    {
-      action: "Logout",
-      browser: "Chrome",
-      os: "Windows",
-      ip: "192.168.10.0",
-      location: "USA",
-      isp: "Verizon",
-      date: "8 hours ago",
-    },
-    {
-      action: "Register",
-      browser: "Chrome",
-      os: "Windows",
-      ip: "192.168.10.0",
-      location: "USA",
-      isp: "Verizon",
-      date: "10 hours ago",
-    },
   ];
 
   const recentLabels = [
@@ -144,13 +69,13 @@ function ActivityLog() {
     <div className="activity">
       <RecentActivity
         title="Active sessions"
-        data={activeData}
+        data={user.activity.active}
         labels={activeLabels}
         flipVertical={true}
       />
       <RecentActivity
         title="Recent activity"
-        data={recentData}
+        data={user.activity.recent}
         labels={recentLabels}
       />
     </div>

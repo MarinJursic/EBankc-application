@@ -11,8 +11,6 @@ function Navigation() {
 
   const [nested, setNested] = useState(0);
 
-  console.log(location);
-
   useEffect(() => {
     const parsed = location.split("/");
 

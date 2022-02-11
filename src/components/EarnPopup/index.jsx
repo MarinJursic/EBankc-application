@@ -1,16 +1,24 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { Modal } from "@material-ui/core";
 import "./styles.scss";
 import { useState } from "react";
 import { useEffect } from "react";
-import {
-  MdKeyboardArrowDown,
-  MdKeyboardArrowUp,
-  MdSentimentSatisfiedAlt,
-} from "react-icons/md";
+import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+
+import { useDispatch, useSelector } from "react-redux";
+import { holdAsset } from "../../actions/authActions";
+
+import Alert from "../Alert";
 
 export default function EarnPopup({ popup, setPopup, asset }) {
+  const user = useSelector((state) => state.auth.user);
+
+  const dispatch = useDispatch();
+
   const [amount, setAmount] = useState(0);
+
+  const [error, setError] = useState(null);
 
   const [active, setActive] = useState(0);
 
@@ -55,26 +63,34 @@ export default function EarnPopup({ popup, setPopup, asset }) {
   };
 
   const handleCheck = () => {
-    if (amount < 0.0001) {
-      setAmount(0.0001);
-    } else if (amount > 10000) {
+    if (amount > 10000) {
       setAmount(10000);
     }
   };
 
   const handlePercentage = (index) => {
-    let newAmount = parseFloat(amount * btnPercentages[index - 1]);
-    newAmount = newAmount + parseFloat(amount);
+    let available = user.wallet.assets[asset].wallet;
+
+    let newAmount = parseFloat(available * btnPercentages[index - 1]);
 
     if (newAmount > 10000) {
       newAmount = 10000;
     }
 
-    setAmount((amount) => parseFloat(newAmount).toFixed(4));
+    setAmount((amount) => parseFloat(newAmount));
   };
 
   const handleSubmit = () => {
-    console.log("Delegated: " + amount);
+    let available = user.wallet.assets[asset].wallet;
+
+    if (amount > available) {
+      setError("Not enough funds.");
+      return null;
+    }
+
+    setError(null);
+    dispatch(holdAsset(asset, parseFloat(amount)));
+    setAmount(0);
   };
 
   const handleActive = (ind) => {
@@ -212,7 +228,7 @@ export default function EarnPopup({ popup, setPopup, asset }) {
             </span>
             <span className="available">
               <h3>Available</h3>
-              <h2>0</h2>
+              <h2>{user.wallet.assets[asset].wallet}</h2>
               <h4>Your assets will be deployed in 1 day at 00:00 UTC</h4>
             </span>
             <span className="amount">
@@ -230,6 +246,7 @@ export default function EarnPopup({ popup, setPopup, asset }) {
                 <button onClick={() => handlePercentage(4)}>100%</button>
               </div>
             </span>
+            {error && <Alert text={error} error={true} />}
             <span className="rewards">
               <h4>Annual Rate For Bronze: 4%</h4>
               <h4>Rewards paid daily</h4>
