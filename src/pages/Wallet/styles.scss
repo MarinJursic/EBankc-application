@@ -18,7 +18,7 @@
       align-items: center;
       padding: 1rem;
       padding-inline: 0;
-      padding-right: 1rem;
+      padding-right: 1rem !important;
 
       .earnings {
         width: 100%;
@@ -367,7 +367,7 @@
 
       .leftside {
         width: 100%;
-        padding-right: 0;
+        padding-right: 0 !important;
         padding-bottom: 0;
       }
 
