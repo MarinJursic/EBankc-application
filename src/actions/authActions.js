@@ -132,6 +132,20 @@ export const loadUser = () => (dispatch, getState) => {
   dispatch({ type: USER_LOADING });
 };
 
+export const borrowAsset =
+  (collateral, collateralAmount, asset, assetAmount) =>
+  (dispatch, getState) => {
+    const wallet = getState().auth.user.wallet;
+
+    wallet.assets[collateral].wallet -= collateralAmount;
+    wallet.assets[asset].borrowed += assetAmount;
+
+    dispatch({
+      type: UPDATE_WALLET,
+      payload: wallet,
+    });
+  };
+
 export const holdAsset = (asset, amount) => (dispatch, getState) => {
   const wallet = getState().auth.user.wallet;
 
@@ -187,8 +201,7 @@ export const registerUser =
       assets: {
         EBCT: {
           wallet: 11,
-          holding: 23,
-          locked: 25000,
+          holding: 35000,
         },
         BTC: {
           wallet: 1,
@@ -244,8 +257,7 @@ export const loginUser =
       assets: {
         EBCT: {
           wallet: 11.00001,
-          holding: 23,
-          locked: 25000,
+          holding: 35000,
         },
         BTC: {
           wallet: 1,
@@ -262,10 +274,12 @@ export const loginUser =
         USDC: {
           wallet: 2050,
           holding: 100,
+          borrowed: 0,
         },
         USDT: {
           wallet: 3078,
           holding: 200,
+          borrowed: 0,
         },
       },
     };

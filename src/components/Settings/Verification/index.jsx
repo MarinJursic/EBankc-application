@@ -41,7 +41,7 @@ function WithdrawalLimits() {
     {
       level: "Level 2",
       daily: "$1,000,000.00",
-      weekly: "$5,000,000.00",
+      weekly: "$50,000,000.00",
     },
   ];
 

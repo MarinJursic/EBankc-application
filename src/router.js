@@ -17,6 +17,8 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Wallet = lazy(() => import("./pages/Wallet"));
 const Earn = lazy(() => import("./pages/Earn"));
 const EarnToken = lazy(() => import("./pages/EarnToken"));
+const Borrow = lazy(() => import("./pages/Borrow"));
+const BorrowToken = lazy(() => import("./pages/BorrowToken"));
 const EBCT = lazy(() => import("./pages/EBCT"));
 const BuyCrypto = lazy(() => import("./pages/BuyCrypto"));
 const Convert = lazy(() => import("./pages/Convert"));
@@ -64,6 +66,8 @@ function RouterComponent() {
                 <Route path="/wallet" element={<Wallet />} />
                 <Route path="/earn" element={<Earn />} />
                 <Route path="/earn/:token" element={<EarnToken />} />
+                <Route path="/borrow" element={<Borrow />} />
+                <Route path="/borrow/:token" element={<BorrowToken />} />
                 <Route path="/ebct" element={<EBCT />} />
                 <Route path="/convert" element={<Convert />} />
                 <Route path="/transactions" element={<Transactions />} />

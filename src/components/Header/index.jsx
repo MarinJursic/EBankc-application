@@ -7,6 +7,7 @@ import DepositWithdrawPopup from "../DepositWithdrawPopup";
 import MobileMenu from "../MobileMenu";
 import RedeemPopup from "../RedeemPopup";
 import EarnPopup from "../EarnPopup";
+import BorrowPopup from "../BorrowPopup";
 
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../actions/authActions";
@@ -26,21 +27,21 @@ function Header({ page }) {
   const [menu, setMenu] = useState(false);
 
   const levels = [
-    { name: "Bronze", img: "bronze.svg", amount: 0 },
-    { name: "Silver", img: "silver.svg", amount: 5000 },
-    { name: "Gold", img: "gold.svg", amount: 10000 },
-    { name: "Diamond", img: "diamond.svg", amount: 20000 },
+    { name: "Karma lvl 1", img: "bronze.svg", amount: 0 },
+    { name: "Karma lvl 2", img: "silver.svg", amount: 50000 },
+    { name: "Karma lvl 3", img: "gold.svg", amount: 200000 },
+    { name: "Karma lvl 4", img: "diamond.svg", amount: 1000000 },
   ];
 
   const getLevel = () => {
-    let locked = parseFloat(user.wallet.assets["EBCT"].locked);
+    let holding = parseFloat(user.wallet.assets["EBCT"].holding);
 
     for (let i = 0; i < levels.length; i++) {
       if (i === 3) {
         setLevel(i + 1);
         return;
       } else {
-        if (locked >= levels[i].amount && locked < levels[i + 1].amount) {
+        if (holding >= levels[i].amount && holding < levels[i + 1].amount) {
           setLevel(i + 1);
           return;
         }
@@ -76,10 +77,20 @@ function Header({ page }) {
       icon: "/images/navigation/earn.svg",
       subtitle: "Total Holding",
       tooltip:
-        "Estimated total value of your staked, locked and holding assets, expressed in USD",
+        "Estimated total value of your staked, holding and holding assets, expressed in USD",
       btn1: "EARN",
       btn1Icon: "/images/dashboard/earn.svg",
       btn2: "REDEEM",
+      btn2Icon: "/images/dashboard/redeem.svg",
+    },
+    Borrow: {
+      icon: "/images/navigation/earn.svg",
+      subtitle: "Total Borrowing",
+      tooltip:
+        "Estimated total value of your staked, holding and holding assets, expressed in USD",
+      btn1: "BORROW",
+      btn1Icon: "/images/dashboard/earn.svg",
+      btn2: "REPAY LOAN",
       btn2Icon: "/images/dashboard/redeem.svg",
     },
     EBCT: {
@@ -129,6 +140,12 @@ function Header({ page }) {
     return turnToString ? val.toLocaleString("en-US") : val;
   };
 
+  const calcAssetBorrowValue = (asset, turnToString = true) => {
+    const val = (user.wallet.assets[asset].borrowed || 0) * prices[asset];
+
+    return turnToString ? val.toLocaleString("en-US") : val;
+  };
+
   const calcAssetTotalValue = (asset, turnToString = true) => {
     const val =
       calcAssetWalletValue(asset, false) + calcAssetholdingValue(asset, false);
@@ -153,6 +170,9 @@ function Header({ page }) {
           break;
         case "Earn":
           val = calcAssetholdingValue(asset, false);
+          break;
+        case "Borrow":
+          val = calcAssetBorrowValue(asset, false);
           break;
         default:
           val = calcAssetTotalValue(asset, false);
@@ -186,6 +206,9 @@ function Header({ page }) {
       case "REDEEM":
         setButtonPopup(4);
         break;
+      case "BORROW":
+        setButtonPopup(5);
+        break;
       default:
         break;
     }
@@ -210,9 +233,17 @@ function Header({ page }) {
           />
         );
       case 3:
-        return <EarnPopup popup={buttonPopup} setPopup={setButtonPopup} />;
+        return (
+          <EarnPopup
+            popup={buttonPopup}
+            setPopup={setButtonPopup}
+            asset="USDT"
+          />
+        );
       case 4:
         return <RedeemPopup popup={buttonPopup} setPopup={setButtonPopup} />;
+      case 5:
+        return <BorrowPopup popup={buttonPopup} setPopup={setButtonPopup} />;
       default:
         break;
     }

@@ -69,7 +69,7 @@ function MobileMenu() {
                     height={25}
                     className="routeIcon"
                   />
-                  <span className="textspan">Earn</span>
+                  <span className="textspan">Borrow</span>
                 </span>
               </Link>
             </li>

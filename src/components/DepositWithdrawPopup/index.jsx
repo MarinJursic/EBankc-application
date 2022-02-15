@@ -39,31 +39,37 @@ export default function DepositPopup({ popup, setPopup, type }) {
       name: "BTC",
       full: "Bitcoin",
       icon: "/images/dashboard/bitcoin.svg",
-      min: 0.01,
+      min: 0.01138,
     },
     {
       name: "ETH",
       full: "Ethereum",
       icon: "/images/dashboard/ethereum.svg",
-      min: 0.1,
+      min: 0.161678,
     },
     {
       name: "BNB",
       full: "Binance Coin",
       icon: "/images/dashboard/bnb.svg",
-      min: 100,
+      min: 1.167201,
     },
     {
       name: "USDC",
       full: "USD Coin",
       icon: "/images/dashboard/usdc.svg",
-      min: 100,
+      min: 500,
     },
     {
       name: "USDT",
       full: "Tether",
       icon: "/images/dashboard/usdt.svg",
-      min: 100,
+      min: 500,
+    },
+    {
+      name: "EBCT",
+      full: "EBCT Token",
+      icon: "/images/dashboard/ebct.svg",
+      min: 500,
     },
   ];
 
@@ -229,7 +235,7 @@ export default function DepositPopup({ popup, setPopup, type }) {
               </span>
               <span className="warningbox">
                 <div className="b">
-                  <p>Redemptions are currently disabled for this portfolio</p>
+                  <p>Withdrawals are currently disabled for this portfolio</p>
                 </div>
               </span>
             </div>
@@ -399,8 +405,7 @@ export default function DepositPopup({ popup, setPopup, type }) {
                     <strong>Minimum Amount: </strong>
                     {assets[active].min} {assets[active].name}
                     <br />
-                    Any amount below the minimum amount won't be credited or
-                    refunded
+                    Any amount below the minimum won't be credited or refunded
                   </p>
                 </div>
               </span>

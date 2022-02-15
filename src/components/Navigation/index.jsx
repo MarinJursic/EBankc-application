@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./styles.scss";
 
@@ -8,18 +8,6 @@ function Navigation() {
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
 
   const location = useLocation().pathname;
-
-  const [nested, setNested] = useState(0);
-
-  useEffect(() => {
-    const parsed = location.split("/");
-
-    if (parsed.length === 3 && parsed[1] === "earn") {
-      setNested(1);
-    } else {
-      setNested(0);
-    }
-  }, [location]);
 
   return !isAuth ? null : (
     <aside className="sidemenu">
@@ -73,9 +61,7 @@ function Navigation() {
             <Link to="/earn">
               <span
                 className={
-                  location === "/earn" || nested === 1
-                    ? "spanbox active"
-                    : "spanbox"
+                  location.includes("/earn") ? "spanbox active" : "spanbox"
                 }
               >
                 <img
@@ -86,6 +72,24 @@ function Navigation() {
                   className="routeIcon"
                 />
                 <span className="textspan">Earn</span>
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/borrow">
+              <span
+                className={
+                  location.includes("/borrow") ? "spanbox active" : "spanbox"
+                }
+              >
+                <img
+                  src="/images/navigation/earn.svg"
+                  alt="earn"
+                  width={20}
+                  height={20}
+                  className="routeIcon"
+                />
+                <span className="textspan">Borrow</span>
               </span>
             </Link>
           </li>

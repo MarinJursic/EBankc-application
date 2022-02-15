@@ -54,7 +54,7 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-function EarnToken() {
+function BorrowToken() {
   const isVisible = useSelector((state) => state.config.isVisible);
   const prices = useSelector((state) => state.price.prices);
   const user = useSelector((state) => state.auth.user);
@@ -73,7 +73,7 @@ function EarnToken() {
   const tokenName = token.toUpperCase();
 
   const calcAssetholdingValue = (asset, turnToString = true) => {
-    const val = user.wallet.assets[asset].holding * prices[asset];
+    const val = user.wallet.assets[asset].borrowed * prices[asset];
 
     return turnToString ? val.toLocaleString("en-US") : val;
   };
@@ -128,7 +128,7 @@ function EarnToken() {
       name: "USDC",
       icon: "/images/dashboard/usdc.svg",
       description:
-        "The EBankc USDC portfolio offers the best short term interest rate of up to 9% in 30 days. It's perfect for users that want to avoid market volatility while earning passively on the crypto.",
+        "The EBankc USDC loan let's you collateralize BTC, BNB, ETH and EBCT for 50% loan in USDC. Loan repayment is due annually. Users don't have to sell their assets during a market dip, EBankc let them borrow funds against their cryptoassets so they get loan while continuing to hold.",
       lvl1: 1,
       lvl1range: "0 - 49,999",
       lvl2: 2,
@@ -143,14 +143,14 @@ function EarnToken() {
       name: "USDT",
       icon: "/images/dashboard/usdt.svg",
       description:
-        "The EBankc USDT portfolio offers the best short term interest rate of up to 9% in 30 days. Ifs perfect for users that want to avoid market volatility while earning passively on the crypto.",
-      lvl1: 3,
+        "The EBankc USDT loan let's you collateralize BTC, BNB, ETH and EBCT for 50% loan in USDT. Loan repayment is due annually. Users don't have to sell their assets during a market dip, EBankc let them borrow funds against their cryptoassets so they get loan while continuing to hold.",
+      lvl1: 8,
       lvl1range: "0 - 49,999",
-      lvl2: 5,
+      lvl2: 6,
       lvl2range: "50,000 - 199,999",
-      lvl3: 7,
+      lvl3: 4,
       lvl3range: "200,000 - 1,000,000",
-      lvl4: 9,
+      lvl4: 2,
       lvl4range: "Above 1,000,000",
       autoDeploy: false,
     },
@@ -243,33 +243,33 @@ function EarnToken() {
   }, [filter]);
 
   return (
-    <main className="earntoken">
-      <Header page="Earn" />
+    <main className="borrowtoken">
+      <Header page="Borrow" />
       <section className="desktop">
         <div className="leftside">
           <div className="largebox">
-            <h3>About {assets[tokenName].name}</h3>
+            <h3>About {assets[tokenName].name} Loan</h3>
             <p>{assets[tokenName].description}</p>
           </div>
           <div className="earnings">
             <div className="earnbox">
               <img src="/images/lock.svg" alt="lock" width={25} height={25} />
-              <h4>30 days locked up period</h4>
+              <h4>Loan due annually</h4>
             </div>
             <div className="earnbox">
               <img src="/images/time.svg" alt="time" width={25} height={25} />
-              <h4>Rewards paid daily</h4>
+              <h4>Instant Credit</h4>
             </div>
           </div>
           <div className="largebox">
-            <h3>EBankc {assets[tokenName].name} Returns</h3>
+            <h3>{assets[tokenName].name} Loan rates</h3>
             <table>
               <thead>
                 <tr>
                   <th style={{ textAlign: "start" }}>
                     Karma lvl / EBCT Staked.
                   </th>
-                  <th>Return</th>
+                  <th>Loan Interest</th>
                 </tr>
               </thead>
               <tbody>
@@ -288,7 +288,7 @@ function EarnToken() {
                       </div>
                     </span>
                   </td>
-                  <td>{assets[tokenName].lvl1}%</td>
+                  <td>{assets[tokenName].lvl1}% APY</td>
                 </tr>
                 <tr>
                   <td>
@@ -305,7 +305,7 @@ function EarnToken() {
                       </div>
                     </span>
                   </td>
-                  <td>{assets[tokenName].lvl2}%</td>
+                  <td>{assets[tokenName].lvl2}% APY</td>
                 </tr>
                 <tr>
                   <td>
@@ -322,7 +322,7 @@ function EarnToken() {
                       </div>
                     </span>
                   </td>
-                  <td>{assets[tokenName].lvl3}%</td>
+                  <td>{assets[tokenName].lvl3}% APY</td>
                 </tr>
                 <tr>
                   <td>
@@ -340,7 +340,7 @@ function EarnToken() {
                       </div>
                     </span>
                   </td>
-                  <td>{assets[tokenName].lvl4}%</td>
+                  <td>{assets[tokenName].lvl4}% APY</td>
                 </tr>
               </tbody>
             </table>
@@ -348,12 +348,12 @@ function EarnToken() {
         </div>
         <div className="rightside">
           <div className="largebox">
-            <h3>Your Holdings</h3>
+            <h3>Your Loans</h3>
             <table>
               <thead>
                 <tr>
-                  <th>Holding</th>
-                  <th>{assets[tokenName].name} Earnings</th>
+                  <th>Loans</th>
+                  <th>Repayment</th>
                 </tr>
               </thead>
               <tbody>
@@ -363,7 +363,8 @@ function EarnToken() {
                       <h4>
                         {isVisible
                           ? `${
-                              user.wallet.assets[assets[tokenName].name].holding
+                              user.wallet.assets[assets[tokenName].name]
+                                .borrowed
                             }`
                           : "---"}
                       </h4>
@@ -405,7 +406,7 @@ function EarnToken() {
             </div>
             <div className="earnbox">
               <h4 className="nextreward">
-                Next reward due in <strong>22 days</strong>
+                Payment due in <strong>322 days</strong>
               </h4>
             </div>
             {assets[tokenName].autoDeploy && (
@@ -479,19 +480,23 @@ function EarnToken() {
                         0,
                         transactions.length > 5 ? 5 : transactions.length
                       )
-                      .map((transaction) => (
-                        <tr>
-                          <td>{transaction.asset}</td>
-                          <td>{transaction.type}</td>
-                          <td>{transaction.status}</td>
-                          <td>
-                            {transaction.time
-                              .toLocaleDateString("en-US")
-                              .toString()}
-                          </td>
-                          <td>{transaction.amount}</td>
-                        </tr>
-                      ))}
+                      .map((transaction) => {
+                        if (transaction.asset !== tokenName) return null;
+
+                        return (
+                          <tr>
+                            <td>{transaction.asset}</td>
+                            <td>{transaction.type}</td>
+                            <td>{transaction.status}</td>
+                            <td>
+                              {transaction.time
+                                .toLocaleDateString("en-US")
+                                .toString()}
+                            </td>
+                            <td>{transaction.amount}</td>
+                          </tr>
+                        );
+                      })}
                   </>
                 )}
               </tbody>
@@ -506,4 +511,4 @@ function EarnToken() {
   );
 }
 
-export default EarnToken;
+export default BorrowToken;

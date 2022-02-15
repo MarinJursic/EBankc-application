@@ -194,8 +194,6 @@ function Dashboard() {
         return <RedeemPopup popup={popup} setPopup={setPopup} asset={asset} />;
       case 3:
         return <EarnPopup popup={popup} setPopup={setPopup} asset={asset} />;
-      case 4:
-        return <div>Wassup</div>;
       default:
         break;
     }

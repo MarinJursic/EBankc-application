@@ -67,21 +67,21 @@ function EBCT() {
   const [level, setLevel] = useState(1);
 
   const levels = [
-    { name: "Bronze", img: "bronze.svg", amount: 0 },
-    { name: "Silver", img: "silver.svg", amount: 5000 },
-    { name: "Gold", img: "gold.svg", amount: 10000 },
-    { name: "Diamond", img: "diamond.svg", amount: 20000 },
+    { name: "Karma lvl 1", img: "bronze.svg", amount: 0 },
+    { name: "Karma lvl 2", img: "silver.svg", amount: 50000 },
+    { name: "Karma lvl 3", img: "gold.svg", amount: 200000 },
+    { name: "Karma lvl 4", img: "diamond.svg", amount: 1000000 },
   ];
 
   const getLevel = () => {
-    let locked = parseFloat(user.wallet.assets["EBCT"].locked);
+    let holding = parseFloat(user.wallet.assets["EBCT"].holding);
 
     for (let i = 0; i < levels.length; i++) {
       if (i === 3) {
         setLevel(i + 1);
         return;
       } else {
-        if (locked >= levels[i].amount && locked < levels[i + 1].amount) {
+        if (holding >= levels[i].amount && holding < levels[i + 1].amount) {
           setLevel(i + 1);
           return;
         }
@@ -503,18 +503,17 @@ function EBCT() {
                     height={25}
                   />
                   <strong>{levels[level - 1].name}</strong>
-                  tier
                 </span>
                 <div className="linegraph">
                   <h5>
-                    {isVisible ? user.wallet.assets["EBCT"].locked : "---"}
+                    {isVisible ? user.wallet.assets["EBCT"].holding : "---"}
                   </h5>
                   <div className="containergraph">
                     <div
                       className="reached"
                       style={{
                         width: `${
-                          (user.wallet.assets["EBCT"].locked /
+                          (user.wallet.assets["EBCT"].holding /
                             levels[level - (level === 4 ? 1 : 0)].amount) *
                           100
                         }%`,
@@ -526,16 +525,16 @@ function EBCT() {
                   </h5>
                 </div>
                 {!(
-                  user.wallet.assets["EBCT"].locked >=
+                  user.wallet.assets["EBCT"].holding >=
                   levels[levels.length - 1].amount
                 ) && (
                   <p>
-                    Stake or lock{" "}
+                    Hold{" "}
                     {isVisible
                       ? levels[level - (level === 4 ? 1 : 0)].amount -
-                        user.wallet.assets["EBCT"].locked
+                        user.wallet.assets["EBCT"].holding
                       : "-"}{" "}
-                    more EBCT to react Level {level + 1}.
+                    more EBCT to reach Karma Level {level + 1}.
                   </p>
                 )}
               </div>
@@ -563,7 +562,7 @@ function EBCT() {
                         />
                         <div className="karmaContent">
                           <h4>Karma lvl 1.</h4>
-                          <h4>0 - 4,999</h4>
+                          <h4>0 - 49,999</h4>
                         </div>
                       </span>
                     </td>
@@ -580,7 +579,7 @@ function EBCT() {
                         />
                         <div className="karmaContent">
                           <h4>Karma lvl 2.</h4>
-                          <h4>5,000 - 19,999</h4>
+                          <h4>50,000 - 199,999</h4>
                         </div>
                       </span>
                     </td>
@@ -597,7 +596,7 @@ function EBCT() {
                         />
                         <div className="karmaContent">
                           <h4>Karma lvl 3.</h4>
-                          <h4>20,000 - 100,000</h4>
+                          <h4>200,000 - 1,000,000</h4>
                         </div>
                       </span>
                     </td>
@@ -615,7 +614,7 @@ function EBCT() {
 
                         <div className="karmaContent">
                           <h4>Karma lvl 4.</h4>
-                          <h4>Above 100,000</h4>
+                          <h4>Above 1,000,000</h4>
                         </div>
                       </span>
                     </td>
