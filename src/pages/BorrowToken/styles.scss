@@ -478,7 +478,7 @@
 }
 
 @media only screen and (max-width: 1200px) {
-  .earntoken {
+  .borrowtoken {
     .desktop {
       flex-direction: column;
       padding-bottom: 3rem;
@@ -517,14 +517,14 @@
 }
 
 @media only screen and (max-width: 1000px) {
-  .earntoken {
+  .borrowtoken {
     width: 100%;
     padding: 1rem !important;
   }
 }
 
 @media only screen and(max-width: 750px) {
-  .earntoken {
+  .borrowtoken {
     padding: 0 !important;
 
     .desktop {
@@ -561,7 +561,7 @@
 }
 
 @media only screen and (max-width: 400px) {
-  .earntoken .desktop .rightside .recentactivity table td {
+  .borrowtoken .desktop .rightside .recentactivity table td {
     font-size: 0.75em !important;
   }
 }
