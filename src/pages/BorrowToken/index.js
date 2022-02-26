@@ -128,7 +128,7 @@ function BorrowToken() {
       name: "USDC",
       icon: "/images/dashboard/usdc.svg",
       description:
-        "The EBankc USDC loan let's you collateralize BTC, BNB, ETH and EBCT for 50% loan in USDC. Loan repayment is due annually. Users don't have to sell their assets during a market dip, EBankc let them borrow funds against their cryptoassets so they get loan while continuing to hold.",
+        "The EBankc USDC loan let's you collateralize BTC, BNB, ETH and EBCT at 50% LTV. Loan repayment is due in 30days. Users don't have to sell their assets during a market dip, EBankc let them borrow funds against their cryptoassets so they get loan while continuing to hold.",
       lvl1: 1,
       lvl1range: "0 - 49,999",
       lvl2: 2,
@@ -254,7 +254,7 @@ function BorrowToken() {
           <div className="earnings">
             <div className="earnbox">
               <img src="/images/lock.svg" alt="lock" width={25} height={25} />
-              <h4>Loan due annually</h4>
+              <h4>30 days Loan Period</h4>
             </div>
             <div className="earnbox">
               <img src="/images/time.svg" alt="time" width={25} height={25} />
@@ -347,46 +347,43 @@ function BorrowToken() {
           </div>
         </div>
         <div className="rightside">
-          <div className="largebox">
-            <h3>Your Loans</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Loans</th>
-                  <th>Repayment</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <div className="column">
-                      <h4>
-                        {isVisible
-                          ? `${
-                              user.wallet.assets[assets[tokenName].name]
-                                .borrowed
-                            }`
-                          : "---"}
-                      </h4>
-                      <h6>
-                        {isVisible
-                          ? `${
-                              "$" +
-                              calcAssetholdingValue(assets[tokenName].name)
-                            }`
-                          : "---"}
-                      </h6>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="column">
-                      <h4>{isVisible ? "0.00" : "---"}</h4>
-                      <h6>{isVisible ? "$0.00" : "---"}</h6>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div className="collateral">
+            <div className="dept">
+              <div className="left">
+                <img src="/images/dashboard/usdt.svg" alt="usdt" />
+                <div className="text">
+                  <p>Total Dept</p>
+                  <h5>5000 USDT</h5>
+                </div>
+              </div>
+              <div className="right">
+                <div className="text">
+                  <p>LTV</p>
+                  <h5>50%</h5>
+                </div>
+              </div>
+            </div>
+            <div className="dept">
+              <div className="left">
+                <img src="/images/dashboard/bitcoin.svg" alt="btc" />
+                <div className="text">
+                  <p>Collateral amount</p>
+                  <h5>0.2807088 BTC</h5>
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <p>Remaining Principal</p>
+              <h5>5000 USDT</h5>
+            </div>
+            <div className="row">
+              <p>Residual Interest</p>
+              <h5>30 USDT</h5>
+            </div>
+            <div className="row">
+              <p>Expiration Date</p>
+              <h5>2022-02-28 02:45:26</h5>
+            </div>
           </div>
           <div className="earnings">
             <div className="earnbox">
@@ -403,11 +400,6 @@ function BorrowToken() {
                 defaultChecked
                 inputProps={{ "aria-label": "ant design" }}
               />
-            </div>
-            <div className="earnbox">
-              <h4 className="nextreward">
-                Payment due in <strong>322 days</strong>
-              </h4>
             </div>
             {assets[tokenName].autoDeploy && (
               <div className="earnbox">
@@ -438,28 +430,35 @@ function BorrowToken() {
                   </th>
                   <th>
                     <div className="thBox" onClick={() => handleSort(2)}>
-                      Type
+                      Amount
                       {filter.type === 1 && <MdKeyboardArrowUp />}
                       {filter.type === 2 && <MdKeyboardArrowDown />}
                     </div>
                   </th>
                   <th>
                     <div className="thBox" onClick={() => handleSort(3)}>
-                      Status
+                      Date Borrowed
                       {filter.status === 1 && <MdKeyboardArrowUp />}
                       {filter.status === 2 && <MdKeyboardArrowDown />}
                     </div>
                   </th>
                   <th>
                     <div className="thBox" onClick={() => handleSort(4)}>
-                      Time
+                      Repayment Asset
                       {filter.time === 1 && <MdKeyboardArrowUp />}
                       {filter.time === 2 && <MdKeyboardArrowDown />}
                     </div>
                   </th>
                   <th>
                     <div className="thBox" onClick={() => handleSort(5)}>
-                      Amount
+                      RPM Amount
+                      {filter.amount === 1 && <MdKeyboardArrowUp />}
+                      {filter.amount === 2 && <MdKeyboardArrowDown />}
+                    </div>
+                  </th>
+                  <th>
+                    <div className="thBox" onClick={() => handleSort(5)}>
+                      RPM Date
                       {filter.amount === 1 && <MdKeyboardArrowUp />}
                       {filter.amount === 2 && <MdKeyboardArrowDown />}
                     </div>

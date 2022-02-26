@@ -189,6 +189,61 @@
       padding: 1rem;
       padding-inline: 0;
 
+      .collateral {
+        width: 100%;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin-bottom: 1rem;
+        padding: 1rem;
+
+        p {
+          font-size: 1rem;
+          font-weight: 500;
+          opacity: 0.6;
+        }
+
+        h5 {
+          font-size: 1.1rem;
+        }
+
+        .dept {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          place-content: space-between;
+          margin: 0.5rem 0;
+
+          .left {
+            display: flex;
+            align-items: center;
+            text-align: left;
+
+            img {
+              width: 2rem;
+              height: 2rem;
+              margin-right: 1rem;
+            }
+          }
+
+          .right {
+            text-align: right;
+          }
+        }
+
+        .row {
+          margin: 1rem 0;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          place-content: space-between;
+        }
+      }
+
       .earnings {
         width: 100%;
         margin-bottom: 1rem;
@@ -213,11 +268,6 @@
           align-items: center;
           justify-content: space-between;
           padding-inline: 1rem;
-
-          .nextreward {
-            width: 100%;
-            text-align: center;
-          }
 
           .earntext {
             display: flex;
@@ -548,6 +598,31 @@
   }
 
   .rightside {
+    .collateral {
+      .dept .left,
+      .dept .right {
+        .text {
+          h5 {
+            font-size: 0.9rem;
+          }
+
+          p {
+            font-size: 0.85rem;
+          }
+        }
+      }
+
+      .row {
+        h5 {
+          font-size: 0.9rem !important;
+        }
+
+        p {
+          font-size: 0.85rem !important;
+        }
+      }
+    }
+
     .earnings {
       flex-direction: column;
 

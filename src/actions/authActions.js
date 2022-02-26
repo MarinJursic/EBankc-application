@@ -279,7 +279,7 @@ export const loginUser =
         USDT: {
           wallet: 3078,
           holding: 200,
-          borrowed: 0,
+          borrowed: 1000,
         },
       },
     };

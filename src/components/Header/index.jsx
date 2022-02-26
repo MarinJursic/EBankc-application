@@ -8,6 +8,7 @@ import MobileMenu from "../MobileMenu";
 import RedeemPopup from "../RedeemPopup";
 import EarnPopup from "../EarnPopup";
 import BorrowPopup from "../BorrowPopup";
+import RepayPopup from "../RepayPopup";
 
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../actions/authActions";
@@ -209,6 +210,9 @@ function Header({ page }) {
       case "BORROW":
         setButtonPopup(5);
         break;
+      case "REPAY LOAN":
+        setButtonPopup(6);
+        break;
       default:
         break;
     }
@@ -244,6 +248,8 @@ function Header({ page }) {
         return <RedeemPopup popup={buttonPopup} setPopup={setButtonPopup} />;
       case 5:
         return <BorrowPopup popup={buttonPopup} setPopup={setButtonPopup} />;
+      case 6:
+        return <RepayPopup popup={buttonPopup} setPopup={setButtonPopup} />;
       default:
         break;
     }
