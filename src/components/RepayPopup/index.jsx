@@ -6,12 +6,16 @@ import "./styles.scss";
 import { useState } from "react";
 import { useEffect } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 
 import { useDispatch, useSelector } from "react-redux";
 import { redeemAsset } from "../../actions/authActions";
 
 export default function RepayPopup({ popup, setPopup }) {
   const user = useSelector((state) => state.auth.user);
+
+  const [opened, setOpened] = useState(false);
+  const [selected, setSelected] = useState(1);
 
   const [assetAmount, setAssetAmount] = useState(0);
 
@@ -63,11 +67,25 @@ export default function RepayPopup({ popup, setPopup }) {
   };
 
   const handlePercentage = (index) => {
-    let newAmount = user.wallet.assets["USDT"].wallet;
+    if (selected === 1) {
+      let newAmount = user.wallet.assets["USDT"].wallet;
 
-    newAmount = newAmount * btnPercentages[index - 1];
+      newAmount = newAmount * btnPercentages[index - 1];
 
-    setAssetAmount(newAmount);
+      setAssetAmount(newAmount);
+    } else {
+      let newAmount = user.wallet.assets["USDC"].wallet;
+
+      newAmount = newAmount * btnPercentages[index - 1];
+
+      setAssetAmount(newAmount);
+    }
+  };
+
+  const handleSelect = (num) => {
+    setSelected(num);
+
+    setOpened(false);
   };
 
   return (
@@ -104,23 +122,61 @@ export default function RepayPopup({ popup, setPopup }) {
                 />
                 <div className="right">
                   <button onClick={() => handlePercentage(4)}>Max</button>
-                  <img
-                    src="/images/dashboard/usdt.svg"
-                    alt="usdt"
-                    width={30}
-                    height={30}
-                  />
+                  <div
+                    className="selectmenu"
+                    onClick={() => setOpened(!opened)}
+                  >
+                    <img
+                      src={
+                        selected === 1
+                          ? "/images/dashboard/usdt.svg"
+                          : "/images/dashboard/usdc.svg"
+                      }
+                      alt="usdt"
+                      width={30}
+                      height={30}
+                    />
+                    {opened ? <AiFillCaretUp /> : <AiFillCaretDown />}
+                    {opened && (
+                      <div className="dropdown">
+                        <img
+                          src="/images/dashboard/usdt.svg"
+                          alt="usdt"
+                          width={30}
+                          height={30}
+                          onClick={() => handleSelect(1)}
+                        />
+                        <img
+                          src="/images/dashboard/usdc.svg"
+                          alt="usdt"
+                          width={30}
+                          height={30}
+                          onClick={() => handleSelect(2)}
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </span>
             <span className="debt">
               <div className="debtbox">
                 <h5>Total Debt</h5>
-                <h4>{user.wallet.assets["USDT"].wallet} USDT</h4>
+                <h4>
+                  {selected === 1
+                    ? user.wallet.assets["USDT"].wallet
+                    : user.wallet.assets["USDC"].wallet}{" "}
+                  USDT
+                </h4>
               </div>
               <div className="debtbox">
                 <h5>Your Free Asset</h5>
-                <h4>{user.wallet.assets["USDT"].wallet} USDT</h4>
+                <h4>
+                  {selected === 1
+                    ? user.wallet.assets["USDT"].wallet
+                    : user.wallet.assets["USDC"].wallet}{" "}
+                  USDT
+                </h4>
               </div>
             </span>
             <span className="amount">
